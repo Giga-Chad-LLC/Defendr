@@ -3,16 +3,16 @@ Implement:
     entities:
         User        +
         Directory   +
-        Infobox
-        Field
+        Infobox     +
+        Field       +
 
     relationships:
-        Infobox   -> User
+        Infobox   -> User   +
         Directory -> User   +
 
     ISA hierarchies:
-        SelectionField -> Field
-        TextField -> Field
+        SelectionField -> Field  +
+        TextField -> Field       +
 */
 
 CREATE TABLE users (
@@ -20,6 +20,7 @@ CREATE TABLE users (
     email VARCHAR(320) NOT NULL,
     password TEXT NOT NULL
 );
+
 
 CREATE TABLE directories (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +30,8 @@ CREATE TABLE directories (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE infobox (
+
+CREATE TABLE infoboxes (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	user_id INT NOT NULL,
 	directory_id INT NOT NULL,
@@ -39,7 +41,8 @@ CREATE TABLE infobox (
     FOREIGN KEY (directory_id) REFERENCES directories(id)
 );
 
-CREATE TABLE field (
+
+CREATE TABLE fields (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	infobox_id INT NOT NULL,
 	label TEXT NOT NULL,
