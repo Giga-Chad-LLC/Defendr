@@ -46,6 +46,22 @@ CREATE TABLE fields (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	infobox_id INT NOT NULL,
 	label TEXT NOT NULL,
-    requaried INT,
-    FOREIGN KEY (infobox_id) REFERENCES infobox(id)
+    required INT,
+    FOREIGN KEY (infobox_id) REFERENCES infoboxes(id)
+);
+
+-- IS-A hierarchies
+
+CREATE TABLE selection_fields (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    field_id INT NOT NULL,
+    FOREIGN KEY (field_id) REFERENCES fields(id)
+);
+
+
+CREATE TABLE text_fields (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    field_id INT NOT NULL,
+    value TEXT NOT NULL,
+    FOREIGN KEY (field_id) REFERENCES fields(id)
 );
