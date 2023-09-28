@@ -28,3 +28,21 @@ CREATE TABLE directories (
     icon TEXT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE infobox (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	user_id INT NOT NULL,
+	directory_id INT NOT NULL,
+	icon TEXT NOT NULL,
+	title TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (directory_id) REFERENCES directories(id)
+);
+
+CREATE TABLE field (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	infobox_id INT NOT NULL,
+	label TEXT NOT NULL,
+    requaried INT,
+    FOREIGN KEY (infobox_id) REFERENCES infobox(id)
+);
