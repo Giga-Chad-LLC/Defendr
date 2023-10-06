@@ -34,9 +34,10 @@ CREATE TABLE directories (
 CREATE TABLE infoboxes (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	user_id INT NOT NULL,
-	directory_id INT NOT NULL,
+	directory_id INT, -- infobox might not have a parent directory
 	icon TEXT NOT NULL,
 	title TEXT NOT NULL,
+    layout ENUM('ONLINE_SERVICE', 'INTERNATIONAL_PASSPORT', 'BANK_CARD', 'DRIVING_LICENSE', 'CUSTOM_LAYOUT') NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (directory_id) REFERENCES directories(id)
 );
@@ -47,6 +48,7 @@ CREATE TABLE fields (
 	infobox_id INT NOT NULL,
 	label TEXT NOT NULL,
     required INT,
+    type ENUM('SELECTION', 'TEXT') NOT NULL,
     FOREIGN KEY (infobox_id) REFERENCES infoboxes(id)
 );
 
@@ -64,4 +66,13 @@ CREATE TABLE text_fields (
     field_id INT NOT NULL,
     value TEXT NOT NULL,
     FOREIGN KEY (field_id) REFERENCES fields(id)
+);
+
+
+CREATE TABLE options (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    selection_field_id INT NOT NULL,
+    label TEXT NOT NULL,
+    selected BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (selection_field_id) REFERENCES selection_fields(id)
 );
