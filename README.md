@@ -6,6 +6,11 @@
 1. Vladislav Artiukhov (vartiukhov@constructor.university)
 2. Vladislav Naumkin (vnaumkin@constructor.university)
 
+## Deploy
+
+Here is the hosted website of the homework 4 on **GitHub Pages**: https://giga-chad-llc.github.io/Defendr/
+
+
 
 ## Configuration:
 
