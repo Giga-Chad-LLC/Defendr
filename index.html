@@ -4,27 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Defendr | Home</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./src/css/normilize.css">
+    <link rel="stylesheet" href="./src/css/margins.css">
+    <link rel="stylesheet" href="./src/css/styles.css">
 </head>
 <body>
 
     <header class="header">
-        <div class="container">
-            <div class="header__logo">
+        <div class="container header__content">
+            <a href="index.html" class="header__logo">
                 <img src="./src/assets/icons/logo-icon.svg" alt="Logo icon">
                 <span>Defendr</span>
-            </div>
+            </a>
             <a href="./src/pages/imprint.html">View imprint</a>
         </div>
     </header>
 
     <div class="container">
 
-        <div class="preview-block">
+        <div class="preview-block mt-60">
             <h3 class="title">Get-started component for new users</h3>
             <p class="paragraph">Get-stated component view</p>
         </div>
 
-        <div class="agenda">
+        <div class="agenda mt-50">
             <div class="agenda__content">
                 <h3 class="title">Protecting and securely storing of your personal data is our goal</h3>
                 <p class="paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -39,88 +47,84 @@
             </div>
         </div>
 
-        <div class="auth">
+        <div class="auth mt-100">
             <div class="preview-block">
                 <h3 class="title">Login and registration components</h3>
                 <p class="paragraph">The following components are intended to be used as login and registration forms.</p>
             </div>
 
-            <div class="auth__forms">
-                <form action="" class="dimmer auth__login">
+            <div class="auth__forms mt-50">
+                <form action="#" class="dimmer auth__login">
                     <span class="auth__forms-title">Login</span>
                     <div class="auth__forms-inputs">
                         <input type="email" placeholder="Email:">
                         <input type="password" placeholder="Password:">
                     </div>
-                    <button class="auth__forms-submit">Submit</button>
+                    <button type="submit" class="auth__forms-submit button">Submit</button>
                 </form>
-                <form action="" class="dimmer auth__registration">
+                <form action="#" class="dimmer auth__registration">
                     <span class="auth__forms-title">Registration</span>
                     <div class="auth__forms-inputs">
                         <input type="email" placeholder="Email:">
                         <input type="password" placeholder="Password:">
                         <input type="password" placeholder="Confirm password:">
                     </div>
-                    <button class="auth__forms-submit">Submit</button>
+                    <button type="submit" class="auth__forms-submit button">Submit</button>
                 </form>
             </div>
         </div>
 
-        <div class="workspace">
+        <div class="workspace mt-100">
             <div class="preview-block">
                 <h3 class="title">Outlook of personal workspace with infoboxes</h3>
                 <p class="paragraph">This component represents how a personal workspace will look like.</p>
             </div>
 
-            <div class="frame">
-                <div class="workspace__content">
-                    <div class="workspace__content-item">
-                        <img src="./src/assets/icons/passport-icon.svg" alt="icon">
-                        <span>National Passport Credentials</span>
-                    </div>
-                    <div class="workspace__content-item">
-                        <img src="./src/assets/icons/globe-icon.svg" alt="icon">
-                        <span>fontawesome.com Credentials</span>
-                    </div>
-                    <div class="workspace__content-item">
-                        <img src="./src/assets/icons/globe-icon.svg" alt="icon">
-                        <span>gmail.com Credentials</span>
-                    </div>
+            <div class="workspace__content frame mt-50">
+                <div class="workspace__content-item">
+                    <img src="./src/assets/icons/passport-icon.svg"/>
+                    <span>National Passport Credentials</span>
+                </div>
+                <div class="workspace__content-item">
+                    <img src="./src/assets/icons/globe-icon.svg" alt="icon">
+                    <span>fontawesome.com Credentials</span>
+                </div>
+                <div class="workspace__content-item">
+                    <img src="./src/assets/icons/globe-icon.svg" alt="icon">
+                    <span>gmail.com Credentials</span>
                 </div>
             </div>
         </div>
 
 
-        <div class="creation">
+        <div class="creation mt-100">
             <div class="preview-block">
                 <h3 class="title">Infobox creation component</h3>
                 <p class="paragraph">This component represents how infobox creation will look like.</p>
             </div>
 
-            <div class="frame">
-                <div class="creation__content">
-                    <div class="creation__template">
-                        <span>Template:</span>
-                        <select name="templates" id="templates">
-                            <option value="online-service" selected="true">Online Service</option>
-                            <option value="national-passport">National Passport</option>
-                            <option value="international-passport">International Passport</option>
-                            <option value="custom">Custom</option>
-                        </select>
+            <div class="creation__content frame mt-50">
+                <div class="creation__template">
+                    <span>Template:</span>
+                    <select name="templates" id="templates">
+                        <option value="online-service" selected="true">Online Service</option>
+                        <option value="national-passport">National Passport</option>
+                        <option value="international-passport">International Passport</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                <div class="creation__fields mt-50">
+                    <div class="creation__fields-item">
+                        <span>URL:</span>
+                        <input type="text" placeholder="https://google.com/">
                     </div>
-                    <div class="creation__fields">
-                        <div class="creation__fields-item">
-                            <span>URL:</span>
-                            <input type="text">
-                        </div>
-                        <div class="creation__fields-item">
-                            <span>Email:</span>
-                            <input type="email">
-                        </div>
-                        <div class="creation__fields-item">
-                            <span>Password:</span>
-                            <input type="password">
-                        </div>
+                    <div class="creation__fields-item">
+                        <span>Email:</span>
+                        <input type="email" placeholder="example@gmail.com">
+                    </div>
+                    <div class="creation__fields-item">
+                        <span>Password:</span>
+                        <input type="password">
                     </div>
                 </div>
             </div>
@@ -129,7 +133,7 @@
     </div>
 
 
-    <footer class="footer">
+    <footer class="footer mt-120">
         <div class="container">
             <h3 class="footer__disclaimer">Disclaimer</h3>
             <p class="footer__parag">This website is student lab work and does not necessarily reflect Jacobs University Bremen opinions. Jacobs University Bremen does not endorse this site, nor is it checked by Jacobs University Bremen regularly, nor is it part of the official Jacobs University Bremen web presence. For each external link existing on this website, we initially have checked that the target page does not contain contents which is illegal wrt. German jurisdiction. However, as we have no influence on such contents, this may change without our notice. Therefore we deny any responsibility for the websites referenced through our external links from here. No information conflicting with GDPR is stored in the server.</p>
