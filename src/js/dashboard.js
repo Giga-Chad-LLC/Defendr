@@ -1,7 +1,4 @@
-
 (() => {
-    const host = "http://127.0.0.1:8000";
-
     function getFormData(formSelector, callback) {
         document.querySelector(formSelector).addEventListener("submit", function(e) {
             e.preventDefault();
@@ -51,6 +48,71 @@
         container.style.visibility = 'visible';
     }
 
+    // requests
+    {
+        const host = "http://127.0.0.1:8000";
+
+        // getting all users
+        getFormData("#get-users-form", _ => {
+            axios.get(`${host}/users`)
+                .then(response => createTable({
+                        form: document.querySelector("#get-users-form"),
+                        containerSelector: ".frames-container__result",
+                        headers: ["id", "email"],
+                        rows: response.data.users.map(user => [user.id, user.email])
+                    }))
+                .catch(error => {
+                    alert(`Error: ${error.response.data.detail}`)
+                    console.error(error);
+                });
+        })
+
+        // getting user by id
+        getFormData('#get-user-by-id-form', data => {
+            if (data.id == null) {
+                alert("Id field cannot be empty");
+                return;
+            }
+
+            axios.get(`${host}/users/${data.id}`)
+            .then(response => {
+                const user = response.data;
+
+                createTable({
+                    form: document.querySelector("#get-user-by-id-form"),
+                    containerSelector: ".frames-container__result",
+                    headers: ["id", "email"],
+                    rows: [[user.id, user.email]]
+                });
+            })
+            .catch(error => {
+                alert(`Error: ${error.response.data.detail}`)
+                console.error(error);
+            });
+        })
+
+        // creating user
+        getFormData('#create-user-form', data => {
+            console.log(data)
+
+            axios.post(`${host}/users`, data)
+            .then(response => {
+                const user = response.data;
+
+                createTable({
+                    form: document.querySelector("#create-user-form"),
+                    containerSelector: ".frames-container__result",
+                    headers: ["id", "email"],
+                    rows: [[user.id, user.email]]
+                });
+            })
+            .catch(error => {
+                alert(`Error: ${error.response.data.detail}`)
+                console.error(error);
+            });
+        })
+    }
+
     function displayFramesBySelectOptions({
         selectSelector,
         optionsToFrameSelectorsMapping,
@@ -82,66 +144,6 @@
             infoboxes: '#infoboxes-frame',
         },
         unhideClass: "dashboard-frame-visible",
-    })
-
-    // getting all users
-    getFormData("#get-users-form", _ => {
-        axios.get(`${host}/users`)
-            .then(response => createTable({
-                    form: document.querySelector("#get-users-form"),
-                    containerSelector: ".frames-container__result",
-                    headers: ["id", "email"],
-                    rows: response.data.users.map(user => [user.id, user.email])
-                }))
-            .catch(error => {
-                alert(`Error: ${error.response.data.detail}`)
-                console.error(error);
-            });
-    })
-
-    // getting user by id
-    getFormData('#get-user-by-id-form', data => {
-        if (data.id == null) {
-            alert("Id field cannot be empty");
-            return;
-        }
-
-        axios.get(`${host}/users/${data.id}`)
-        .then(response => {
-            const user = response.data;
-
-            createTable({
-                form: document.querySelector("#get-user-by-id-form"),
-                containerSelector: ".frames-container__result",
-                headers: ["id", "email"],
-                rows: [[user.id, user.email]]
-            });
-        })
-        .catch(error => {
-            alert(`Error: ${error.response.data.detail}`)
-            console.error(error);
-        });
-    })
-
-    // creating user
-    getFormData('#create-user-form', data => {
-        console.log(data)
-
-        axios.post(`${host}/users`, data)
-        .then(response => {
-            const user = response.data;
-
-            createTable({
-                form: document.querySelector("#create-user-form"),
-                containerSelector: ".frames-container__result",
-                headers: ["id", "email"],
-                rows: [[user.id, user.email]]
-            });
-        })
-        .catch(error => {
-            alert(`Error: ${error.response.data.detail}`)
-            console.error(error);
-        });
     })
 
 })();

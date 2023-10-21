@@ -60,6 +60,9 @@ def get_user_by_id(user_id: int, connection=Depends(get_connection)):
 # @descr: create user in database
 @router.post("/", response_model=UserResponse, response_description="User data of inserted user")
 def create_user(user: UserDto, connection=Depends(get_connection)):
+    if user.email == "" or user.password == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All fields must be non-empty")
+
     cursor = connection.cursor()
     try:
         user.password = bcrypt.hashpw(user.password.encode(), bcrypt.gensalt()).decode()

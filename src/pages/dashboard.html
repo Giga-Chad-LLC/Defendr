@@ -66,7 +66,42 @@
                 </form>
             </div>
 
-            <div class="dashboard-frame" id="directories-frame">directories-frame</div>
+            <div class="dashboard-frame" id="directories-frame">
+                <form id="get-directories-form">
+                    <div class="frames-container__result"></div>
+                    <button type="submit" class="button" id="get-all-directories-button">Get all directories</button>
+                </form>
+
+                <form id="get-directories-by-user-id">
+                    <div class="frames-container__result"></div>
+
+                    <div class="frames-container__block">
+                        <label for="id">User id:</label>
+                        <input type="id" name="id" required="true">
+                    </div>
+                    <button type="submit" class="button" id="get-directories-by-user-id-button">Get directories by user id</button>
+                </form>
+
+                <form id="create-directory-for-user-form">
+                    <div class="frames-container__result"></div>
+
+                    <div class="frames-container__block">
+                        <label for="userId">User id:</label>
+                        <select type="text" name="userId">
+                            <!-- TODO: populate with existing user ids -->
+                        </select>
+                    </div>
+                    <div class="frames-container__block mt-20">
+                        <label for="title">Title:</label>
+                        <input type="text" name="title">
+                    </div>
+                    <div class="frames-container__block mt-20">
+                        <label for="icon">Icon:</label>
+                        <input type="text" name="icon">
+                    </div>
+                    <button type="submit" class="button" id="create-user-button">Create directory</button>
+                </form>
+            </div>
             <div class="dashboard-frame" id="infoboxes-frame">infoboxes-frame</div>
         </div>
     </div>
