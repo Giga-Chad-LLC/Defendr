@@ -41,11 +41,13 @@ class ConnectionManager:
             print("Connection already established")
 
 
-    def cursor(self):
-        return self.connection.cursor()
-
-
     def close(self):
         if self.connection is not None:
             self.connection.close()
             self.connection = None
+
+
+def get_connection():
+    manager = ConnectionManager()
+    manager.connect()
+    return manager.connection

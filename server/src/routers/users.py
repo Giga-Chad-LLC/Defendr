@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from server.src.db.connection import ConnectionManager
+from fastapi import APIRouter, Depends, HTTPException, status
+from server.src.db.connection import get_connection
 
 
 router = APIRouter(
@@ -15,11 +15,8 @@ router = APIRouter(
 # @route: /users
 # @descr: get all users
 @router.get("/")
-def get_users(session):
-    manager = ConnectionManager()
-    manager.connect()
-
-    with manager.cursor() as cursor:
+def get_users(connection=Depends(get_connection)):
+    with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM users")
         users = []
 
@@ -30,4 +27,21 @@ def get_users(session):
             })
 
         return users
+
+
+@router.get("/{user_id}")
+def get_user_by_id(user_id: int, connection=Depends(get_connection)):
+    with connection.cursor() as cursor:
+        query = "SELECT id, email FROM users WHERE id = %s"
+        cursor.execute(query, (user_id,))
+
+        row = cursor.fetchone()
+
+        if cursor.rowcount <= 0:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"User with id '{user_id}' not found")
+        else:
+            return {
+                "id": row[0],
+                "email": row[1],
+            }
 
