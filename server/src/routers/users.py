@@ -6,7 +6,6 @@ router = APIRouter(
     prefix="/users",
     tags=["users"],
     responses={
-
         404: {"detail": "Not found"},
     },
 )
