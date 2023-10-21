@@ -45,6 +45,15 @@ input:focus::placeholder {
     color: var(--action-color);
 }
 
+select {
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 18px;
+    margin: 0;
+}
+
 .button {
     padding: 15px 33px;
     font-size: 20px;
@@ -255,15 +264,6 @@ input:focus::placeholder {
     font-size: 22px;
 }
 
-.creation__template select {
-    background-color: transparent;
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 10px 15px;
-    font-size: 18px;
-    margin: 0;
-}
-
 .creation__fields {
     display: flex;
     flex-wrap: wrap;
@@ -334,4 +334,50 @@ input:focus::placeholder {
 
 .imprint__data-parag {
     font-size: 20px;
+}
+
+/* dashboard */
+/* frames-container */
+.frames-container {
+    display: flex;
+    justify-content: center;
+}
+
+.frames-container label {
+    font-size: 22px;
+    margin-right: 20px;
+}
+
+.frames-container .frame {
+    padding: 30px 15px;
+}
+
+.frames-container form {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.frames-container__block {
+    display: flex;
+    align-items: center;
+}
+
+.frames-container form:first-child {
+    margin-top: 0;
+}
+
+.frames-container form button {
+    margin-top: 20px;
+}
+
+.frames-container__result {
+    max-height: 400px;
+    overflow-x: auto;
+}
+
+.frames-container__result table th,
+.frames-container__result table td {
+    padding: 5px 10px;
 }
