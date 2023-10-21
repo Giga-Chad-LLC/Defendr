@@ -27,7 +27,7 @@
     <div class="container">
         <div class="mt-60">
             <h2>Select what you want to modify:</h2>
-            <select name="forms" id="forms" class="mt-20">
+            <select name="forms" id="forms-select" class="mt-20">
                 <option value="users" selected="true">Users</option>
                 <option value="directories">Directories</option>
                 <option value="infoboxes">Infoboxes</option>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="frames-container mt-50">
-            <div class="frame" id="users-frame">
+            <div class="dashboard-frame dashboard-frame-visible" id="users-frame">
                 <form id="get-users-form">
                     <div class="frames-container__result"></div>
                     <button type="submit" class="button" id="get-all-users-button">Get all users</button>
@@ -65,6 +65,9 @@
                     <button type="submit" class="button" id="create-user-button">Create user</button>
                 </form>
             </div>
+
+            <div class="dashboard-frame" id="directories-frame">directories-frame</div>
+            <div class="dashboard-frame" id="infoboxes-frame">infoboxes-frame</div>
         </div>
     </div>
 

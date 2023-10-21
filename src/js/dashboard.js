@@ -51,6 +51,39 @@
         container.style.visibility = 'visible';
     }
 
+    function displayFramesBySelectOptions({
+        selectSelector,
+        optionsToFrameSelectorsMapping,
+        unhideClass,
+    }) {
+        const select = document.querySelector(selectSelector)
+        select.addEventListener('change', e => {
+            for (const option of select.options) {
+                const { selected, value } = option;
+
+                const frameSelector = optionsToFrameSelectorsMapping[value]
+                const frame = document.querySelector(frameSelector)
+
+                if (selected) {
+                    frame.classList.toggle(unhideClass)
+                }
+                else {
+                    frame.classList.remove(unhideClass)
+                }
+            }
+        });
+    }
+
+    displayFramesBySelectOptions({
+        selectSelector: "#forms-select",
+        optionsToFrameSelectorsMapping: {
+            users: '#users-frame',
+            directories: '#directories-frame',
+            infoboxes: '#infoboxes-frame',
+        },
+        unhideClass: "dashboard-frame-visible",
+    })
+
     // getting all users
     getFormData("#get-users-form", _ => {
         axios.get(`${host}/users`)

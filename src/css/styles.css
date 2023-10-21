@@ -385,3 +385,11 @@ select {
 .frames-container__result table td {
     padding: 5px 10px;
 }
+
+.dashboard-frame {
+    display: none;
+}
+
+.dashboard-frame-visible {
+    display: block;
+}
