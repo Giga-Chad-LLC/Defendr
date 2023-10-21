@@ -373,8 +373,12 @@ select {
 }
 
 .frames-container__result {
+    visibility: hidden;
     max-height: 400px;
     overflow-x: auto;
+    padding: 20px;
+    border: 1px solid var(--link-color);
+    border-radius: 10px;
 }
 
 .frames-container__result table th,

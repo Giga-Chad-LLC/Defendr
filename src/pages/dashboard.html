@@ -37,34 +37,23 @@
         <div class="frames-container mt-50">
             <div class="frame" id="users-frame">
                 <form id="get-users-form">
-                    <div class="frames-container__result">
-                        <!-- <table border="1">
-                            <tr>
-                                <th>id</th>
-                                <th>email</th>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>user1@example.com</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>user2@example.com</td>
-                            </tr>
-                        </table> -->
-                    </div>
+                    <div class="frames-container__result"></div>
                     <button type="submit" class="button" id="get-all-users-button">Get all users</button>
                 </form>
 
                 <form id="get-user-by-id-form">
+                    <div class="frames-container__result"></div>
+
                     <div class="frames-container__block">
                         <label for="id">Id:</label>
-                        <input type="id" name="id">
+                        <input type="id" name="id" required="true">
                     </div>
                     <button type="submit" class="button" id="get-user-by-id-button">Get user by id</button>
                 </form>
 
                 <form id="create-user-form">
+                    <div class="frames-container__result"></div>
+
                     <div class="frames-container__block">
                         <label for="email">Email:</label>
                         <input type="email" name="email">
