@@ -114,6 +114,13 @@ input:focus::placeholder {
     color: var(--action-color);
 }
 
+.header__links a {
+    margin-left: 30px;
+}
+.header__links a:first-child {
+    margin-left: 0;
+}
+
 /* preview-block */
 .preview-block p {
     margin-top: 15px;
