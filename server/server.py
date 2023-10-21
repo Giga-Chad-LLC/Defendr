@@ -1,11 +1,12 @@
 import logging
 from fastapi import FastAPI
 
-from server.src.routers import users
+from server.src.routers import users, infoboxes
 
 try:
     app = FastAPI()
     app.include_router(users.router)
+    app.include_router(infoboxes.router)
 
     print("Server started")
 except Exception:

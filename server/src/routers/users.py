@@ -57,7 +57,7 @@ def get_user_by_id(user_id: int, connection=Depends(get_connection)):
 
 # @method: POST
 # @route: /users
-# @descr: creates user in database
+# @descr: create user in database
 @router.post("/{user_id}", response_model=UserResponse, response_description="User data of inserted user")
 def create_user(user: UserDto, connection=Depends(get_connection)):
     cursor = connection.cursor()
