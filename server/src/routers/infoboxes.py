@@ -124,23 +124,23 @@ def retrive_infobox_data_by_id(connection, infobox_id):
         data = []
 
         for row in rows:
+            response = InfoboxResponse(
+                infobox_id=row[0],
+                infobox_user_id=row[1],
+                infobox_directory_id=row[2],
+                infobox_title=row[3],
+                infobox_icon=row[4],
+                infobox_layout=row[5],
+                field_id=row[6],
+                field_label=row[7],
+                field_type=row[8],
+                text_field_value=row[9],
+                selection_field_id=row[10],
+                option_label=row[11],
+                option_selected=row[12],
+            )
 
-            entry = {
-                "infobox_id": row[0],
-                "infobox_user_id": row[1],
-                "infobox_directory_id": row[2],
-                "infobox_title": row[3],
-                "infobox_icon": row[4],
-                "infobox_layout": row[5],
-                "field_id": row[6],
-                "field_label": row[7],
-                "field_type": row[8],
-                "text_field_value": row[9],
-                "selection_field_id": row[10],
-                "option_label": row[11],
-                "option_selected": row[12],
-            }
-            data.append(entry)
+            data.append(response)
 
         print(data)
         return data
@@ -198,7 +198,7 @@ def create_infobox_field_in_db(connection, data):
 # @method: POST
 # @route: /infoboxes/bankcard
 # @descr: create infobox of type 'BANKCARD' in database
-@router.post("/bankcard", response_model=InfoboxResponse)
+@router.post("/bankcard", response_model=InfoboxesResponse)
 def create_bankcard_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
     print(infobox.fields)
     number, cvv, pin = infobox.fields['number'], infobox.fields['cvv'], infobox.fields['pin']
@@ -206,55 +206,52 @@ def create_bankcard_infobox(infobox: InfoboxDto, connection=Depends(get_connecti
     if (not number) or (not cvv) or (not pin):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All fields must be non-empty")
 
-    infobox_id = create_infobox_in_bd(connection, {
-        'user_id': infobox.user_id,
-        'directory_id': infobox.directory_id,
-        'icon': 'bankcard-icon',
-        'title': 'bankcard',
-        'layout': available_infobox_layouts['BANK_CARD']
-    })
+    try:
+        infobox_id = create_infobox_in_bd(connection, {
+            'user_id': infobox.user_id,
+            'directory_id': infobox.directory_id,
+            'icon': 'bankcard-icon',
+            'title': 'bankcard',
+            'layout': available_infobox_layouts['BANK_CARD']
+        })
 
-    fields_data = [
-        {
-            "infobox_id": infobox_id,
-            "label": 'Number',
-            "required": True,
-            "type": available_field_types['text'],
-            "properties": {
-                "value": number
+        fields_data = [
+            {
+                "infobox_id": infobox_id,
+                "label": 'Number',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": number
+                }
+            },
+            {
+                "infobox_id": infobox_id,
+                "label": 'CVV',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": cvv
+                }
+            },
+            {
+                "infobox_id": infobox_id,
+                "label": 'PIN',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": pin
+                }
             }
-        },
-        {
-            "infobox_id": infobox_id,
-            "label": 'CVV',
-            "required": True,
-            "type": available_field_types['text'],
-            "properties": {
-                "value": cvv
-            }
-        },
-        {
-            "infobox_id": infobox_id,
-            "label": 'PIN',
-            "required": True,
-            "type": available_field_types['text'],
-            "properties": {
-                "value": pin
-            }
-        }
-    ]
+        ]
 
-    for data in fields_data:
-        create_infobox_field_in_db(connection, data)
+        for data in fields_data:
+            create_infobox_field_in_db(connection, data)
 
-    retrive_infobox_data_by_id(connection, infobox_id)
+        response = retrive_infobox_data_by_id(connection, infobox_id)
+        return InfoboxesResponse(infoboxes=response)
 
-    return InfoboxResponse(
-        id=infobox_id,
-        user_id=infobox.user_id,
-        directory_id=infobox.directory_id,
-        icon="icon",
-        title="title",
-        layout="layout",
-        fields={}
-    )
+    except Exception as err:
+        msg = str(err)
+        print(err)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=msg)

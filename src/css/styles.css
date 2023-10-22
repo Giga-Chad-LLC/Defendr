@@ -375,7 +375,8 @@ select {
 .frames-container__result {
     visibility: hidden;
     max-height: 400px;
-    overflow-x: auto;
+    max-width: 900px;
+    overflow: auto;
     padding: 20px;
     border: 1px solid var(--link-color);
     border-radius: 10px;

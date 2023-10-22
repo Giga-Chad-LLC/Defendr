@@ -140,14 +140,47 @@
 
             axios.post(`${host}/infoboxes/bankcard`, data)
             .then(response => {
-                const infobox = response.data;
-                console.log(infobox);
+                console.log(response)
+
+                const headers = [
+                    'infobox_id',
+                    'infobox_user_id',
+                    'infobox_directory_id',
+                    'infobox_title',
+                    'infobox_icon',
+                    'infobox_layout',
+                    'field_id',
+                    'field_label',
+                    'field_type',
+                    'text_field_value',
+                    'selection_field_id',
+                    'option_label',
+                    'option_selected',
+                ]
+
+                const infoboxesRows = response.data.infoboxes.map(infobox => [
+                    infobox.infobox_id,
+                    infobox.infobox_user_id,
+                    infobox.infobox_directory_id,
+                    infobox.infobox_title,
+                    infobox.infobox_icon,
+                    infobox.infobox_layout,
+                    infobox.field_id,
+                    infobox.field_label,
+                    infobox.field_type,
+                    infobox.text_field_value,
+                    infobox.selection_field_id,
+                    infobox.option_label,
+                    infobox.option_selected,
+                ]);
+
+                console.log(infoboxesRows)
 
                 createTable({
                     form: document.querySelector("#bankcard-infobox-fields"),
                     containerSelector: ".frames-container__result",
-                    headers: ["id", "directory_id", "title", "icon", "layout"],
-                    rows: [[infobox.id, infobox.directory_id, infobox.title, infobox.icon, infobox.layout]]
+                    headers,
+                    rows: infoboxesRows
                 });
             })
             .catch(error => {
