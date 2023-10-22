@@ -172,12 +172,68 @@ def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_co
 # @descr: create infobox of type 'INTERNATIONAL_PASSPORT' in database
 @router.post("/international-passport", response_model=InfoboxesResponse)
 def create_international_passport_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
-    # TODO: implement
-    print(infobox.fields)
-    infobox_id = 1
-    infoboxes = retrive_infobox_data_by_id(connection, infobox_id)
+    name, nationality, number, surname = infobox.fields["name"], infobox.fields["nationality"], infobox.fields["number"], infobox.fields["surname"]
 
-    return InfoboxesResponse(infoboxes=infoboxes)
+    if not name or not nationality or not number or not surname:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All fields must be non-empty")
+    
+    try:
+        infobox_id = create_infobox_in_bd(connection, {
+            'user_id': infobox.user_id,
+            'directory_id': infobox.directory_id,
+            'icon': 'national-passport',
+            'title': 'national-passport',
+            'layout': available_infobox_layouts['INTERNATIONAL_PASSPORT']
+        })
+    
+        fields_data = [
+            {
+                "infobox_id": infobox_id,
+                "label": 'Name',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": name
+                }
+            },
+            {
+                "infobox_id": infobox_id,
+                "label": 'Nationality',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": nationality
+                }
+            },
+            {
+                "infobox_id": infobox_id,
+                "label": 'Number',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": number
+                }
+            },
+            {
+                "infobox_id": infobox_id,
+                "label": 'Surname',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": surname
+                }
+            }
+        ]
+
+        for data in fields_data:
+            create_infobox_field_in_db(connection, data)
+
+        response = retrive_infobox_data_by_id(connection, infobox_id)
+        return InfoboxesResponse(infoboxes=response)
+
+    except Exception as err:
+        print(err)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(err))
 
 
 
