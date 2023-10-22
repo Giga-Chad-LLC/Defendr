@@ -35,6 +35,8 @@
         </div>
 
         <div class="frames-container mt-50">
+
+
             <div class="dashboard-frame" id="users-frame">
                 <form id="get-users-form">
                     <div class="frames-container__result"></div>
@@ -66,30 +68,31 @@
                 </form>
             </div>
 
+
+
             <div class="dashboard-frame" id="directories-frame">
                 <form id="get-directories-form">
                     <div class="frames-container__result"></div>
                     <button type="submit" class="button" id="get-all-directories-button">Get all directories</button>
                 </form>
 
-                <form id="get-directories-by-user-id">
+                <form id="get-directories-by-user-id-form">
                     <div class="frames-container__result"></div>
 
                     <div class="frames-container__block">
-                        <label for="id">User id:</label>
-                        <input type="id" name="id" required="true">
+                        <label for="user_id">User id:</label>
+                        <input name="user_id" type="text">
                     </div>
                     <button type="submit" class="button" id="get-directories-by-user-id-button">Get directories by user id</button>
                 </form>
 
-                <form id="create-directory-for-user-form">
+                <form id="create-directory-form">
                     <div class="frames-container__result"></div>
 
                     <div class="frames-container__block">
-                        <label for="userId">User id:</label>
-                        <select type="text" name="userId">
-                            <!-- TODO: populate with existing user ids -->
-                        </select>
+                        <label for="user_id">User id:</label>
+                        <input name="user_id" type="text">
+
                     </div>
                     <div class="frames-container__block mt-20">
                         <label for="title">Title:</label>
@@ -102,6 +105,8 @@
                     <button type="submit" class="button" id="create-directory-button">Create directory</button>
                 </form>
             </div>
+
+
 
             <div class="dashboard-frame dashboard-frame-visible" id="infoboxes-frame">
                     <div class="frames-container__block templates-block">

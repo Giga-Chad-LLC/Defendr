@@ -147,7 +147,73 @@
         });
 
 
-        // creating directories
+
+
+        // getting all directories
+        getFormData('#get-directories-form', _ => {
+            axios.get(`${host}/directories`)
+                .then(response => createTable({
+                        form: document.querySelector("#get-directories-form"),
+                        containerSelector: ".frames-container__result",
+                        headers: ["id", "user_id", "title", "icon"],
+                        rows: response.data.directories.map(directory => [
+                            directory.id,
+                            directory.user_id,
+                            directory.title,
+                            directory.icon
+                        ])
+                    }))
+                .catch(error => {
+                    alert(`Error: ${error?.response?.data?.detail}`)
+                    console.error(error);
+                });
+        });
+
+
+        // getting directories by user id
+        getFormData('#get-directories-by-user-id-form', data => {
+            axios.get(`${host}/directories/${data.user_id}`)
+                .then(response => createTable({
+                        form: document.querySelector("#get-directories-by-user-id-form"),
+                        containerSelector: ".frames-container__result",
+                        headers: ["id", "user_id", "title", "icon"],
+                        rows: response.data.directories.map(directory => [
+                            directory.id,
+                            directory.user_id,
+                            directory.title,
+                            directory.icon
+                        ])
+                    }))
+                .catch(error => {
+                    alert(`Error: ${error?.response?.data?.detail}`)
+                    console.error(error);
+                });
+        });
+
+
+        // create directory in db
+        getFormData('#create-directory-form', data => {
+            axios.post(`${host}/directories`, data)
+                .then(response => {
+                    console.log(response);
+
+                    createTable({
+                        form: document.querySelector("#create-directory-form"),
+                        containerSelector: ".frames-container__result",
+                        headers: ["id", "user_id", "title", "icon"],
+                        rows: [[
+                            response.data.id,
+                            response.data.user_id,
+                            response.data.title,
+                            response.data.icon
+                        ]]
+                    });
+                })
+                .catch(error => {
+                    alert(`Error: ${error?.response?.data?.detail}`)
+                    console.error(error);
+                });
+        });
 
 
 

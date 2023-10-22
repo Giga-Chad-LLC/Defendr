@@ -389,6 +389,9 @@ select {
 
 .dashboard-frame {
     display: none;
+    border: 1px solid var(--link-color);
+    padding: 50px;
+    border-radius: 15px;
 }
 
 .dashboard-frame-visible {
