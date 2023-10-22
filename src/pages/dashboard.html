@@ -28,14 +28,14 @@
         <div class="mt-60">
             <h2>Select what you want to modify:</h2>
             <select name="forms" id="forms-select" class="mt-20">
-                <option value="users" selected="true">Users</option>
+                <option value="users">Users</option>
                 <option value="directories">Directories</option>
-                <option value="infoboxes">Infoboxes</option>
+                <option value="infoboxes" selected="true">Infoboxes</option>
             </select>
         </div>
 
         <div class="frames-container mt-50">
-            <div class="dashboard-frame dashboard-frame-visible" id="users-frame">
+            <div class="dashboard-frame" id="users-frame">
                 <form id="get-users-form">
                     <div class="frames-container__result"></div>
                     <button type="submit" class="button" id="get-all-users-button">Get all users</button>
@@ -99,10 +99,99 @@
                         <label for="icon">Icon:</label>
                         <input type="text" name="icon">
                     </div>
-                    <button type="submit" class="button" id="create-user-button">Create directory</button>
+                    <button type="submit" class="button" id="create-directory-button">Create directory</button>
                 </form>
             </div>
-            <div class="dashboard-frame" id="infoboxes-frame">infoboxes-frame</div>
+
+            <div class="dashboard-frame dashboard-frame-visible" id="infoboxes-frame">
+                    <div class="frames-container__block">
+                        <label for="template">Template:</label>
+                        <select name="template" id="template-select">
+                            <option value="online-service" selected="true">Online Service</option>
+                            <option value="international-passport">International Passport</option>
+                            <option value="bankcard">Bankcard</option>
+                        </select>
+                    </div>
+
+                    <form id="online-service-infobox-fields" class="mt-50 infobox-fields infobox-fields-visible">
+                        <div class="frames-container__result"></div>
+
+                        <div class="frames-container__block">
+                            <label for="user_id">User id:</label>
+                            <input name="user_id" type="number">
+                        </div>
+
+                        <div class="frames-container__block mt-20">
+                            <label for="url">URL:</label>
+                            <input name="url" type="text" placeholder="https://google.com/">
+                        </div>
+                        <div class="frames-container__block mt-20">
+                            <label for="email">Email:</label>
+                            <input name="email" type="email" placeholder="example@gmail.com">
+                        </div>
+                        <div class="frames-container__block mt-20">
+                            <label for="password">Password:</label>
+                            <input name="password" type="password">
+                        </div>
+
+                        <button type="submit" class="button mt-20">Create infobox</button>
+                    </form>
+
+                    <form id="international-passport-infobox-fields" class="mt-50 infobox-fields">
+                        <div class="frames-container__result"></div>
+
+                        <div class="frames-container__block">
+                            <label for="user_id">User id:</label>
+                            <input name="user_id" type="number">
+                        </div>
+
+                        <div class="frames-container__block mt-20">
+                            <label for="number">Number:</label>
+                            <input name="number" type="text">
+                        </div>
+
+                        <div class="frames-container__block mt-20">
+                            <label for="surname">Surname:</label>
+                            <input name="surname" type="text">
+                        </div>
+
+                        <div class="frames-container__block mt-20">
+                            <label for="name">Name:</label>
+                            <input name="name" type="text">
+                        </div>
+
+                        <div class="frames-container__block mt-20">
+                            <label for="nationality">Nationality:</label>
+                            <input name="nationality" type="text">
+                        </div>
+
+                        <button type="submit" class="button mt-20">Create infobox</button>
+                    </form>
+
+                    <form id="bankcard-infobox-fields" class="mt-50 infobox-fields">
+                        <div class="frames-container__result"></div>
+
+                        <div class="frames-container__block">
+                            <label for="user_id">User id:</label>
+                            <input name="user_id" type="number">
+                        </div>
+
+                        <div class="frames-container__block mt-20">
+                            <label for="number">Number:</label>
+                            <input name="number" type="text">
+                        </div>
+                        <div class="frames-container__block mt-20">
+                            <label for="pin">PIN code:</label>
+                            <input name="pin" type="password">
+                        </div>
+                        <div class="frames-container__block mt-20">
+                            <label for="cvv">CVV:</label>
+                            <input name="cvv" type="password">
+                        </div>
+
+                        <button type="submit" class="button mt-20">Create infobox</button>
+                    </form>
+            </div>
         </div>
     </div>
 

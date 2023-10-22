@@ -4,7 +4,6 @@
             e.preventDefault();
 
             const formData = new FormData(this);
-            console.log(formData)
 
             // convert form data to a plain JavaScript object
             const formDataObject = {};
@@ -110,7 +109,52 @@
                 alert(`Error: ${error.response.data.detail}`)
                 console.error(error);
             });
-        })
+        });
+
+
+        // creating infobox
+
+        // online service infobox
+        getFormData('#online-service-infobox-fields', data => {
+            console.log(data)
+        });
+
+        // international passport infobox
+        getFormData('#international-passport-infobox-fields', data => {
+            console.log(data)
+        });
+
+        // bankcard infobox
+        getFormData('#bankcard-infobox-fields', data => {
+            data = {
+                user_id: data.user_id,
+                directory_id: null,
+                fields: {
+                    number: data.number,
+                    pin: data.pin,
+                    cvv: data.cvv,
+                },
+            };
+
+            console.log(data);
+
+            axios.post(`${host}/infoboxes/bankcard`, data)
+            .then(response => {
+                const infobox = response.data;
+                console.log(infobox);
+
+                createTable({
+                    form: document.querySelector("#bankcard-infobox-fields"),
+                    containerSelector: ".frames-container__result",
+                    headers: ["id", "directory_id", "title", "icon", "layout"],
+                    rows: [[infobox.id, infobox.directory_id, infobox.title, infobox.icon, infobox.layout]]
+                });
+            })
+            .catch(error => {
+                alert(`Error: ${error.response.data.detail}`)
+                console.error(error);
+            });
+        });
     }
 
     function displayFramesBySelectOptions({
@@ -144,6 +188,16 @@
             infoboxes: '#infoboxes-frame',
         },
         unhideClass: "dashboard-frame-visible",
-    })
+    });
+
+    displayFramesBySelectOptions({
+        selectSelector: "#template-select",
+        optionsToFrameSelectorsMapping: {
+            "online-service": "#online-service-infobox-fields",
+            "international-passport": "#international-passport-infobox-fields",
+            "bankcard": "#bankcard-infobox-fields",
+        },
+        unhideClass: "infobox-fields-visible",
+    });
 
 })();

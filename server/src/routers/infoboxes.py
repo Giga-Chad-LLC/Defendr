@@ -46,10 +46,10 @@ def get_infobox_by_id(infobox_id: int, connection=Depends(get_connection)):
 
 
 # @method: POST
-# @route: /infoboxes
-# @descr: create infobox in database
-@router.post("/", response_model=InfoboxResponse, response_description="Infobox data of infobox with the same id")
-def get_infobox_by_id(infobox: InfoboxDto, connection=Depends(get_connection)):
+# @route: /infoboxes/online-service
+# @descr: create infobox of type 'ONLINE_SERVICE' in database
+@router.post("/online-service", response_model=InfoboxResponse)
+def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
     # TODO: implement
     return InfoboxResponse(
         id=1,
@@ -58,4 +58,42 @@ def get_infobox_by_id(infobox: InfoboxDto, connection=Depends(get_connection)):
         icon="icon",
         title="title",
         layout="layout"
+    )
+
+
+# @method: POST
+# @route: /infoboxes/international-passport
+# @descr: create infobox of type 'INTERNATIONAL_PASSPORT' in database
+@router.post("/international-passport", response_model=InfoboxResponse)
+def create_international_passport_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
+    # TODO: implement
+    return InfoboxResponse(
+        id=1,
+        user_id=1,
+        directory_id=None,
+        icon="icon",
+        title="title",
+        layout="layout"
+    )
+
+
+# @method: POST
+# @route: /infoboxes/bankcard
+# @descr: create infobox of type 'BANKCARD' in database
+@router.post("/bankcard", response_model=InfoboxResponse)
+def create_bankcard_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
+    print(infobox.fields)
+
+    user_id = infobox.user_id
+    number, cvv, pin = infobox.fields['number'], infobox.fields['cvv'], infobox.fields['pin']
+    print(user_id, number, cvv, pin)
+
+    return InfoboxResponse(
+        id=1,
+        user_id=1,
+        directory_id=None,
+        icon="icon",
+        title="title",
+        layout="layout",
+        fields={}
     )
