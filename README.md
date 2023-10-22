@@ -11,6 +11,10 @@
 Here is the hosted website of the **homework 4** on **GitHub Pages**: https://giga-chad-llc.github.io/Defendr/
 
 
+## Demo
+
+![Assignment 5 | Use case](./src/assets/videos/assignment-5-use-case.gif)
+
 
 ## Configuration:
 
