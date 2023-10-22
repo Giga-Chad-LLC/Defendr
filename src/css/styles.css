@@ -401,3 +401,9 @@ select {
 .infobox-fields-visible {
     display: flex !important;
 }
+
+.templates-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

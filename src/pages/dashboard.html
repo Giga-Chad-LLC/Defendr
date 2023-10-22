@@ -104,7 +104,7 @@
             </div>
 
             <div class="dashboard-frame dashboard-frame-visible" id="infoboxes-frame">
-                    <div class="frames-container__block">
+                    <div class="frames-container__block templates-block">
                         <label for="template">Template:</label>
                         <select name="template" id="template-select">
                             <option value="online-service" selected="true">Online Service</option>
@@ -137,6 +137,7 @@
                         <button type="submit" class="button mt-20">Create infobox</button>
                     </form>
 
+
                     <form id="international-passport-infobox-fields" class="mt-50 infobox-fields">
                         <div class="frames-container__result"></div>
 
@@ -147,7 +148,7 @@
 
                         <div class="frames-container__block mt-20">
                             <label for="number">Number:</label>
-                            <input name="number" type="text">
+                            <input name="number" type="number">
                         </div>
 
                         <div class="frames-container__block mt-20">
@@ -167,6 +168,7 @@
 
                         <button type="submit" class="button mt-20">Create infobox</button>
                     </form>
+
 
                     <form id="bankcard-infobox-fields" class="mt-50 infobox-fields">
                         <div class="frames-container__result"></div>
@@ -194,6 +196,13 @@
             </div>
         </div>
     </div>
+
+    <footer class="footer mt-120">
+        <div class="container">
+            <h3 class="footer__disclaimer">Disclaimer</h3>
+            <p class="footer__parag">This website is student lab work and does not necessarily reflect Jacobs University Bremen opinions. Jacobs University Bremen does not endorse this site, nor is it checked by Jacobs University Bremen regularly, nor is it part of the official Jacobs University Bremen web presence. For each external link existing on this website, we initially have checked that the target page does not contain contents which is illegal wrt. German jurisdiction. However, as we have no influence on such contents, this may change without our notice. Therefore we deny any responsibility for the websites referenced through our external links from here. No information conflicting with GDPR is stored in the server.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="../js/dashboard.js"></script>

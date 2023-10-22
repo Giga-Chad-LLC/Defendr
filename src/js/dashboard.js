@@ -136,12 +136,8 @@
                 },
             };
 
-            console.log(data);
-
             axios.post(`${host}/infoboxes/bankcard`, data)
             .then(response => {
-                console.log(response)
-
                 const headers = [
                     'infobox_id',
                     'infobox_user_id',
@@ -173,8 +169,6 @@
                     infobox.option_label,
                     infobox.option_selected,
                 ]);
-
-                console.log(infoboxesRows)
 
                 createTable({
                     form: document.querySelector("#bankcard-infobox-fields"),
