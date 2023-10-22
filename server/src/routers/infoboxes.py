@@ -1,3 +1,4 @@
+import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, status
 from server.src.db.connection import get_connection
 from server.src.routers.models.infoboxes import InfoboxDto, InfoboxResponse, InfoboxesResponse
@@ -158,12 +159,62 @@ def get_infobox_by_id(infobox_id: int, connection=Depends(get_connection)):
 # @descr: create infobox of type 'ONLINE_SERVICE' in database
 @router.post("/online-service", response_model=InfoboxesResponse)
 def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
-    # TODO: implement
-    print(infobox.fields)
-    infobox_id = 1
-    infoboxes = retrive_infobox_data_by_id(connection, infobox_id)
+    email, password, url = infobox.fields["email"], infobox.fields["password"], infobox.fields["url"]
 
-    return InfoboxesResponse(infoboxes=infoboxes)
+    if not email or not password or not url:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All fields must be non-empty")
+    
+    password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+    try:
+        infobox_id = create_infobox_in_bd(connection, {
+            'user_id': infobox.user_id,
+            'directory_id': infobox.directory_id,
+            'icon': 'online-service',
+            'title': 'online-service',
+            'layout': available_infobox_layouts['ONLINE_SERVICE']
+        })
+    
+        fields_data = [
+            {
+                "infobox_id": infobox_id,
+                "label": 'Url',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": url
+                }
+            },
+            {
+                "infobox_id": infobox_id,
+                "label": 'Email',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": email
+                }
+            },
+            {
+                "infobox_id": infobox_id,
+                "label": 'Password',
+                "required": True,
+                "type": available_field_types['text'],
+                "properties": {
+                    "value": password
+                }
+            }
+        ]
+
+        for data in fields_data:
+            create_infobox_field_in_db(connection, data)
+
+        response = retrive_infobox_data_by_id(connection, infobox_id)
+        return InfoboxesResponse(infoboxes=response)
+
+    except Exception as err:
+        print(err)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(err))
+
 
 
 
