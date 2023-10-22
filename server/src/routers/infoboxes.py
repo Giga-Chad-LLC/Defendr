@@ -89,11 +89,72 @@ available_field_types = {
 }
 
 
+def retrive_infobox_data_by_id(connection, infobox_id):
+    cursor = connection.cursor()
+    try:
+        query = """
+            SELECT
+                i.id AS infobox_id,
+                i.user_id AS infobox_user_id,
+                i.directory_id AS infobox_directory_id,
+                i.title AS infobox_title,
+                i.icon AS infobox_icon,
+                i.layout as infobox_layout,
+                f.id AS field_id,
+                f.label AS field_label,
+                f.type AS field_type,
+                tf.value AS text_field_value,
+                sf.id AS selection_field_id,
+                o.label AS option_label,
+                o.selected AS option_selected
+            FROM infoboxes i
+            INNER JOIN fields f ON i.id = f.infobox_id
+            LEFT JOIN text_fields tf ON f.id = tf.field_id AND f.type = 'TEXT'
+            LEFT JOIN selection_fields sf ON f.id = sf.field_id AND f.type = 'SELECTION'
+            LEFT JOIN options o ON sf.id = o.selection_field_id
+            WHERE i.id = %s;
+        """
+
+        cursor.execute(query, (infobox_id,))
+        rows = cursor.fetchall()
+
+        if cursor.rowcount <= 0:
+            raise ValueError(f'Data for infobox with id {infobox_id} not found')
+
+        data = []
+
+        for row in rows:
+
+            entry = {
+                "infobox_id": row[0],
+                "infobox_user_id": row[1],
+                "infobox_directory_id": row[2],
+                "infobox_title": row[3],
+                "infobox_icon": row[4],
+                "infobox_layout": row[5],
+                "field_id": row[6],
+                "field_label": row[7],
+                "field_type": row[8],
+                "text_field_value": row[9],
+                "selection_field_id": row[10],
+                "option_label": row[11],
+                "option_selected": row[12],
+            }
+            data.append(entry)
+
+        print(data)
+        return data
+    finally:
+        cursor.close()
+
+
+
 def create_infobox_in_bd(connection, data):
     cursor = connection.cursor()
     try:
         query = "INSERT INTO infoboxes (user_id, directory_id, icon, title, layout) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(query, (data['user_id'], data['directory_id'], data['icon'], data['title'], data['layout']))
+
         connection.commit()
 
         infobox_id = cursor.lastrowid
@@ -185,6 +246,8 @@ def create_bankcard_infobox(infobox: InfoboxDto, connection=Depends(get_connecti
 
     for data in fields_data:
         create_infobox_field_in_db(connection, data)
+
+    retrive_infobox_data_by_id(connection, infobox_id)
 
     return InfoboxResponse(
         id=infobox_id,
