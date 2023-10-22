@@ -12,70 +12,6 @@ router = APIRouter(
 )
 
 
-# @method: GET
-# @route: /infoboxes
-# @descr: get all infoboxes
-@router.get("/", response_model=InfoboxesResponse, response_description="List of all infoboxes")
-def get_infoboxes(connection=Depends(get_connection)):
-    # TODO: implement
-    return InfoboxesResponse(infoboxes=[
-        InfoboxResponse(
-            id=1,
-            user_id=1,
-            directory_id=None,
-            icon="icon",
-            title="title",
-            layout="layout"
-        )
-    ])
-
-# @method: GET
-# @route: /infoboxes/{infobox_id}
-# @descr: get infobox by id
-@router.get("/{infobox_id}", response_model=InfoboxResponse, response_description="Infobox data of infobox with the same id")
-def get_infobox_by_id(infobox_id: int, connection=Depends(get_connection)):
-    # TODO: implement
-    return InfoboxResponse(
-        id=1,
-        user_id=1,
-        directory_id=None,
-        icon="icon",
-        title="title",
-        layout="layout"
-    )
-
-
-# @method: POST
-# @route: /infoboxes/online-service
-# @descr: create infobox of type 'ONLINE_SERVICE' in database
-@router.post("/online-service", response_model=InfoboxResponse)
-def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
-    # TODO: implement
-    return InfoboxResponse(
-        id=1,
-        user_id=1,
-        directory_id=None,
-        icon="icon",
-        title="title",
-        layout="layout"
-    )
-
-
-# @method: POST
-# @route: /infoboxes/international-passport
-# @descr: create infobox of type 'INTERNATIONAL_PASSPORT' in database
-@router.post("/international-passport", response_model=InfoboxResponse)
-def create_international_passport_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
-    # TODO: implement
-    return InfoboxResponse(
-        id=1,
-        user_id=1,
-        directory_id=None,
-        icon="icon",
-        title="title",
-        layout="layout"
-    )
-
 
 available_infobox_layouts = {
     "ONLINE_SERVICE": 'ONLINE_SERVICE',
@@ -166,6 +102,7 @@ def create_infobox_in_bd(connection, data):
         cursor.close()
 
 
+
 def create_infobox_field_in_db(connection, data):
     cursor = connection.cursor()
     try:
@@ -193,6 +130,55 @@ def create_infobox_field_in_db(connection, data):
         raise err
     finally:
         cursor.close()
+
+
+
+# @method: GET
+# @route: /infoboxes
+# @descr: get all infoboxes
+@router.get("/", response_model=InfoboxesResponse, response_description="List of all infoboxes")
+def get_infoboxes(connection=Depends(get_connection)):
+    # TODO: implement
+    pass
+
+
+
+# @method: GET
+# @route: /infoboxes/{infobox_id}
+# @descr: get infobox by id
+@router.get("/{infobox_id}", response_model=InfoboxResponse, response_description="Infobox data of infobox with the same id")
+def get_infobox_by_id(infobox_id: int, connection=Depends(get_connection)):
+    # TODO: implement
+    pass
+
+
+
+# @method: POST
+# @route: /infoboxes/online-service
+# @descr: create infobox of type 'ONLINE_SERVICE' in database
+@router.post("/online-service", response_model=InfoboxesResponse)
+def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
+    # TODO: implement
+    print(infobox.fields)
+    infobox_id = 1
+    infoboxes = retrive_infobox_data_by_id(connection, infobox_id)
+
+    return InfoboxesResponse(infoboxes=infoboxes)
+
+
+
+# @method: POST
+# @route: /infoboxes/international-passport
+# @descr: create infobox of type 'INTERNATIONAL_PASSPORT' in database
+@router.post("/international-passport", response_model=InfoboxesResponse)
+def create_international_passport_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
+    # TODO: implement
+    print(infobox.fields)
+    infobox_id = 1
+    infoboxes = retrive_infobox_data_by_id(connection, infobox_id)
+
+    return InfoboxesResponse(infoboxes=infoboxes)
+
 
 
 # @method: POST

@@ -47,6 +47,41 @@
         container.style.visibility = 'visible';
     }
 
+    function createTableFromInfoboxes({ form, containerSelector, infoboxes }) {
+        const headers = [
+            'infobox_id',
+            'infobox_user_id',
+            'infobox_directory_id',
+            'infobox_title',
+            'infobox_icon',
+            'infobox_layout',
+            'field_id',
+            'field_label',
+            'field_type',
+            'text_field_value',
+            'selection_field_id',
+            'option_label',
+            'option_selected',
+        ]
+
+        const infoboxRows = infoboxes.map(infobox => [
+            infobox.infobox_id,
+            infobox.infobox_user_id,
+            infobox.infobox_directory_id,
+            infobox.infobox_title,
+            infobox.infobox_icon,
+            infobox.infobox_layout,
+            infobox.field_id,
+            infobox.field_label,
+            infobox.field_type,
+            infobox.text_field_value,
+            infobox.selection_field_id,
+            infobox.option_label,
+            infobox.option_selected,
+        ]);
+        createTable({ form, containerSelector, headers, rows: infoboxRows });
+    }
+
     // requests
     {
         const host = "http://127.0.0.1:8000";
@@ -112,16 +147,67 @@
         });
 
 
+        // creating directories
+
+
+
         // creating infobox
 
         // online service infobox
         getFormData('#online-service-infobox-fields', data => {
-            console.log(data)
+            data = {
+                user_id: data.user_id,
+                directory_id: null,
+                fields: {
+                    email: data.email,
+                    password: data.password,
+                    url: data.url,
+                },
+            };
+
+            console.log(data);
+
+            axios.post(`${host}/infoboxes/online-service`, data)
+                .then(response => {
+                    createTableFromInfoboxes({
+                        form: document.querySelector("#online-service-infobox-fields"),
+                        containerSelector: ".frames-container__result",
+                        infoboxes: response.data.infoboxes
+                    });
+                })
+                .catch(error => {
+                    alert(`Error: ${error?.response?.data?.detail}`)
+                    console.error(error);
+                });
         });
 
         // international passport infobox
         getFormData('#international-passport-infobox-fields', data => {
-            console.log(data)
+            data = {
+                user_id: data.user_id,
+                directory_id: null,
+                fields: {
+                    number: data.number,
+                    surname: data.surname,
+                    name: data.name,
+                    nationality: data.nationality,
+                }
+            };
+
+            console.log(data);
+
+            axios.post(`${host}/infoboxes/international-passport`, data)
+                .then(response => {
+                    createTableFromInfoboxes({
+                        form: document.querySelector("#international-passport-infobox-fields"),
+                        containerSelector: ".frames-container__result",
+                        infoboxes: response.data.infoboxes
+                    });
+                })
+                .catch(error => {
+                    alert(`Error: ${error?.response?.data?.detail}`)
+                    console.error(error);
+                });
         });
 
         // bankcard infobox
@@ -137,50 +223,17 @@
             };
 
             axios.post(`${host}/infoboxes/bankcard`, data)
-            .then(response => {
-                const headers = [
-                    'infobox_id',
-                    'infobox_user_id',
-                    'infobox_directory_id',
-                    'infobox_title',
-                    'infobox_icon',
-                    'infobox_layout',
-                    'field_id',
-                    'field_label',
-                    'field_type',
-                    'text_field_value',
-                    'selection_field_id',
-                    'option_label',
-                    'option_selected',
-                ]
-
-                const infoboxesRows = response.data.infoboxes.map(infobox => [
-                    infobox.infobox_id,
-                    infobox.infobox_user_id,
-                    infobox.infobox_directory_id,
-                    infobox.infobox_title,
-                    infobox.infobox_icon,
-                    infobox.infobox_layout,
-                    infobox.field_id,
-                    infobox.field_label,
-                    infobox.field_type,
-                    infobox.text_field_value,
-                    infobox.selection_field_id,
-                    infobox.option_label,
-                    infobox.option_selected,
-                ]);
-
-                createTable({
-                    form: document.querySelector("#bankcard-infobox-fields"),
-                    containerSelector: ".frames-container__result",
-                    headers,
-                    rows: infoboxesRows
+                .then(response => {
+                    createTableFromInfoboxes({
+                        form: document.querySelector("#bankcard-infobox-fields"),
+                        containerSelector: ".frames-container__result",
+                        infoboxes: response.data.infoboxes
+                    });
+                })
+                .catch(error => {
+                    alert(`Error: ${error?.response?.data?.detail}`)
+                    console.error(error);
                 });
-            })
-            .catch(error => {
-                alert(`Error: ${error?.response?.data?.detail}`)
-                console.error(error);
-            });
         });
     }
 
