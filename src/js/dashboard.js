@@ -151,7 +151,7 @@
                 });
             })
             .catch(error => {
-                alert(`Error: ${error.response.data.detail}`)
+                alert(`Error: ${error?.response?.data?.detail}`)
                 console.error(error);
             });
         });
