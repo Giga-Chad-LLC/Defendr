@@ -5,3 +5,6 @@ run-prod:
 .PHONY: run
 run:
 	uvicorn server.server:app --reload
+
+.PHONY: server
+	python -m server.server
