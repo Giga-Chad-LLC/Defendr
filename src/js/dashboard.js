@@ -82,6 +82,23 @@
         createTable({ form, containerSelector, headers, rows: infoboxRows });
     }
 
+    function showNotificationError(detail) {
+        let msg = "Something went wrong. Adjust your query to achieve correct results"
+
+        if (detail != null && typeof(detail) == 'string') {
+            msg = detail;
+        }
+        else if (detail != null && Array.isArray(detail) && detail.length > 0) {
+            msg = detail[0].msg ?? msg;
+        }
+
+        swal({
+            title: "Error occured",
+            text: msg,
+            icon: "error"
+        });
+    }
+
     // requests
     {
         const host = "http://127.0.0.1:8000";
@@ -96,7 +113,7 @@
                         rows: response.data.users.map(user => [user.id, user.email])
                     }))
                 .catch(error => {
-                    alert(`Error: ${error.response.data.detail}`)
+                    showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
         })
@@ -104,7 +121,7 @@
         // getting user by id
         getFormData('#get-user-by-id-form', data => {
             if (data.id == null) {
-                alert("Id field cannot be empty");
+                showNotificationError("Id field cannot be empty");
                 return;
             }
 
@@ -120,7 +137,7 @@
                 });
             })
             .catch(error => {
-                alert(`Error: ${error.response.data.detail}`)
+                showNotificationError(error?.response?.data?.detail);
                 console.error(error);
             });
         })
@@ -141,7 +158,7 @@
                 });
             })
             .catch(error => {
-                alert(`Error: ${error.response.data.detail}`)
+                showNotificationError(error?.response?.data?.detail);
                 console.error(error);
             });
         });
@@ -164,7 +181,7 @@
                         ])
                     }))
                 .catch(error => {
-                    alert(`Error: ${error?.response?.data?.detail}`)
+                    showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
         });
@@ -185,7 +202,7 @@
                         ])
                     }))
                 .catch(error => {
-                    alert(`Error: ${error?.response?.data?.detail}`)
+                    showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
         });
@@ -210,7 +227,7 @@
                     });
                 })
                 .catch(error => {
-                    alert(`Error: ${error?.response?.data?.detail}`)
+                    showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
         });
@@ -242,7 +259,7 @@
                     });
                 })
                 .catch(error => {
-                    alert(`Error: ${error?.response?.data?.detail}`)
+                    showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
         });
@@ -271,7 +288,7 @@
                     });
                 })
                 .catch(error => {
-                    alert(`Error: ${error?.response?.data?.detail}`)
+                    showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
         });
@@ -297,7 +314,7 @@
                     });
                 })
                 .catch(error => {
-                    alert(`Error: ${error?.response?.data?.detail}`)
+                    showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
         });
