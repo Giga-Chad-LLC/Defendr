@@ -174,7 +174,6 @@ def get_top_users_with_max_infobox_count_by_layout(layout: str, limit: int, conn
 
         data = []
         for (user_id, infobox_layout, infobox_count) in rows:
-            print(user_id, infobox_layout, infobox_count)
             data.append(UserInfoboxCountResponse(
                 user_id=user_id,
                 infobox_layout=(layout if (infobox_layout is None) else infobox_layout),
