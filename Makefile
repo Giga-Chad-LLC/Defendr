@@ -7,4 +7,5 @@ run:
 	uvicorn server.server:app --reload
 
 .PHONY: server
+server:
 	python -m server.server
