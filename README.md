@@ -8,7 +8,7 @@
 
 ## Deploy
 
-Here is the hosted website of the **homework 4** on **GitHub Pages**: https://giga-chad-llc.github.io/Defendr/
+Here is the hosted website of the **homework 6** on **GitHub Pages**: https://giga-chad-llc.github.io/Defendr/
 
 
 ## Demo
@@ -20,17 +20,20 @@ Here is the hosted website of the **homework 4** on **GitHub Pages**: https://gi
 
 First, install all dependancies via:
 ```bash
+pip install fastapi bcrypt mysql-connector-python uvicorn python-dotenv
+# Or if using Python3.10:
 pip install -r ./requirements.txt
 ```
 
-To start the server run `make run` or `make run-prod` (see [`Makefile`](Makefile)), that will start the server on `localhost:8000`:
+To start the server run `make server` (see [`Makefile`](Makefile)), that will start the server on `localhost:8000` (see [server](./server/server.py)):
 ```bash
-uvicorn server.server:app --reload
+python -m server.server # uvicorn should be installed as shown above
 ```
 
 In order to connect to the database adjust the [`server/.env`](server/.env) file to match the database parameters, e.g.:
 ```bash
 # These params configured to match the database instance created via 'docker-compose.yaml'
+# This env file is already set up on clamv server
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
