@@ -108,7 +108,7 @@
                 return;
             }
 
-            axios.get(`${host}/users/${data.id}`)
+            axios.get(`${host}/users/single/${data.id}`)
             .then(response => {
                 const user = response.data;
 

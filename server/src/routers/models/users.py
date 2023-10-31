@@ -14,3 +14,11 @@ class UserResponse(BaseModel):
 
 class UsersResponse(BaseModel):
     users: List[UserResponse]
+
+class UserInfoboxCountResponse(BaseModel):
+    user_id: int
+    infobox_layout: str
+    infobox_count: int
+
+class UsersInfoboxCountResponse(BaseModel):
+    data: List[UserInfoboxCountResponse]

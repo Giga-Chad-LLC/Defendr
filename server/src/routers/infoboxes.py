@@ -1,7 +1,13 @@
 import bcrypt
 from fastapi import APIRouter, Depends, HTTPException, status
 from server.src.db.connection import get_connection
-from server.src.routers.models.infoboxes import InfoboxDto, InfoboxResponse, InfoboxesResponse
+from server.src.routers.models.infoboxes import (
+    available_infobox_layouts,
+    available_field_types,
+    InfoboxDto,
+    InfoboxResponse,
+    InfoboxesResponse,
+)
 
 
 router = APIRouter(
@@ -12,18 +18,6 @@ router = APIRouter(
     },
 )
 
-
-
-available_infobox_layouts = {
-    "ONLINE_SERVICE": 'ONLINE_SERVICE',
-    "INTERNATIONAL_PASSPORT": 'INTERNATIONAL_PASSPORT',
-    "BANK_CARD": 'BANK_CARD',
-}
-
-available_field_types = {
-    "selection": "SELECTION",
-    "text": "TEXT"
-}
 
 
 def retrive_infobox_data_by_id(connection, infobox_id):
@@ -163,7 +157,7 @@ def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_co
 
     if not email or not password or not url:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All fields must be non-empty")
-    
+
     password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
     try:
@@ -174,7 +168,7 @@ def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_co
             'title': 'online-service',
             'layout': available_infobox_layouts['ONLINE_SERVICE']
         })
-    
+
         fields_data = [
             {
                 "infobox_id": infobox_id,
@@ -227,7 +221,7 @@ def create_international_passport_infobox(infobox: InfoboxDto, connection=Depend
 
     if not name or not nationality or not number or not surname:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All fields must be non-empty")
-    
+
     try:
         infobox_id = create_infobox_in_bd(connection, {
             'user_id': infobox.user_id,
@@ -236,7 +230,7 @@ def create_international_passport_infobox(infobox: InfoboxDto, connection=Depend
             'title': 'national-passport',
             'layout': available_infobox_layouts['INTERNATIONAL_PASSPORT']
         })
-    
+
         fields_data = [
             {
                 "infobox_id": infobox_id,

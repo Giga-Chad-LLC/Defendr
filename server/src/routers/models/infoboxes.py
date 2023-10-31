@@ -2,6 +2,18 @@ from pydantic import BaseModel
 from typing import List, Dict, Any, Union
 
 
+available_infobox_layouts = {
+    "ONLINE_SERVICE": 'ONLINE_SERVICE',
+    "INTERNATIONAL_PASSPORT": 'INTERNATIONAL_PASSPORT',
+    "BANK_CARD": 'BANK_CARD',
+}
+
+available_field_types = {
+    "selection": "SELECTION",
+    "text": "TEXT"
+}
+
+
 class InfoboxDto(BaseModel):
     user_id: int
     directory_id: Union[int, None]
