@@ -98,6 +98,7 @@ def create_user(user: UserDto, connection=Depends(get_connection)):
 @router.get("/layouts", response_model=UsersInfoboxCountResponse,
             response_description="Count of infoboxes with the provided layout for all users")
 def get_users_infobox_count_by_layout(layout: str, connection=Depends(get_connection)):
+
     if layout not in available_infobox_layouts:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=f"Layout must be one of {', '.join(available_infobox_layouts.values())}, got '{layout}'")
@@ -141,6 +142,7 @@ def get_users_infobox_count_by_layout(layout: str, connection=Depends(get_connec
 @router.get("/top", response_model=UsersInfoboxCountResponse,
             response_description="Top 5 users that have the maximum number of infoboxes of the provided layout")
 def get_top_users_with_max_infobox_count_by_layout(layout: str, limit: int, connection=Depends(get_connection)):
+
     if layout not in available_infobox_layouts:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=f"Layout must be one of {', '.join(available_infobox_layouts.values())}, got '{layout}'")
@@ -172,9 +174,10 @@ def get_top_users_with_max_infobox_count_by_layout(layout: str, limit: int, conn
 
         data = []
         for (user_id, infobox_layout, infobox_count) in rows:
+            print(user_id, infobox_layout, infobox_count)
             data.append(UserInfoboxCountResponse(
                 user_id=user_id,
-                infobox_layout=infobox_layout,
+                infobox_layout=(layout if (infobox_layout is None) else infobox_layout),
                 infobox_count=infobox_count
             ))
 

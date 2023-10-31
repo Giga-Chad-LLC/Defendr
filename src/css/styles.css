@@ -135,6 +135,14 @@ select {
     margin-top: 15px;
 }
 
+.clickable-table-row {
+    cursor: pointer;
+    transition: 0.1s;
+}
+.clickable-table-row:hover {
+    color: white;
+    background-color: var(--action-color);
+}
 
 /* agenda */
 .agenda {

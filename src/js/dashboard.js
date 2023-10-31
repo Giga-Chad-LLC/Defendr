@@ -15,7 +15,7 @@
         });
     }
 
-    function createTable({form, containerSelector, headers, rows}) {
+    function createTable({form, containerSelector, headers, rows, onRowClick = null }) {
         const container = form.querySelector(containerSelector);
 
         // removing previous content
@@ -40,6 +40,12 @@
             for (let j = 0; j < rowData.length; j++) {
                 const cell = row.insertCell(j);
                 cell.innerHTML = rowData[j];
+            }
+
+            // setting on row click
+            if (onRowClick != null) {
+                row.classList.add('clickable-table-row');
+                row.addEventListener('click', e => onRowClick(row));
             }
         }
 
@@ -144,7 +150,7 @@
 
         // creating user
         getFormData('#create-user-form', data => {
-            console.log(data)
+            console.log(data);
 
             axios.post(`${host}/users`, data)
             .then(response => {
@@ -161,6 +167,77 @@
                 showNotificationError(error?.response?.data?.detail);
                 console.error(error);
             });
+        });
+
+
+        function rowClickHandler(row, data) {
+            for (let i = 0; i < row.children.length && i < data.length; ++i) {
+                const tableData = row.children[i];
+                data[i].value = tableData.textContent;
+            }
+
+            const modalContent = document.querySelector('#modal-1-content');
+            modalContent.innerHTML = "";
+
+            for (const { label, value}  of data) {
+                const block = document.createElement('div');
+
+                const labelElement = document.createElement('span');
+                labelElement.innerText = label;
+                labelElement.classList.add('modal__label');
+
+                const valueElement = document.createElement('span');
+                valueElement.innerText = value;
+                valueElement.classList.add('modal__value');
+
+                block.appendChild(labelElement);
+                block.appendChild(valueElement);
+
+                modalContent.appendChild(block);
+            }
+
+            MicroModal.show('modal-1');
+        }
+
+        getFormData('#users-infoboxes-count-form', data => {
+            const layout = data.layout;
+
+            axios.get(`${host}/users/layouts?layout=${layout}`)
+                .then(response => createTable({
+                    form: document.querySelector("#users-infoboxes-count-form"),
+                    containerSelector: ".frames-container__result",
+                    headers: ["user_id", "infobox_layout", "infobox_count"],
+                    rows: response.data.data.map(data => [data.user_id, data.infobox_layout, data.infobox_count]),
+                    onRowClick: row => rowClickHandler(row, [
+                        { label: "User Id:" },
+                        { label: "Infobox layout:" },
+                        { label: "Infobox count:" }
+                    ])
+                }))
+                .catch(error => {
+                    showNotificationError(error?.response?.data?.detail);
+                    console.error(error);
+                });
+        });
+
+        getFormData('#top-users-by-infoboxes-count-form', data => {
+            const {layout, limit} = data;
+            axios.get(`${host}/users/top?layout=${layout}&limit=${limit}`)
+                .then(response => createTable({
+                    form: document.querySelector("#top-users-by-infoboxes-count-form"),
+                    containerSelector: ".frames-container__result",
+                    headers: ["user_id", "infobox_layout", "infobox_count"],
+                    rows: response.data.data.map(data => [data.user_id, data.infobox_layout, data.infobox_count]),
+                    onRowClick: row => rowClickHandler(row, [
+                        { label: "User Id:" },
+                        { label: "Infobox layout:" },
+                        { label: "Infobox count:" }
+                    ])
+                }))
+                .catch(error => {
+                    showNotificationError(error?.response?.data?.detail);
+                    console.error(error);
+                });
         });
 
 
@@ -361,6 +438,48 @@
             "bankcard": "#bankcard-infobox-fields",
         },
         unhideClass: "infobox-fields-visible",
+    });
+
+    displayFramesBySelectOptions({
+        selectSelector: "#query-forms-select",
+        optionsToFrameSelectorsMapping: {
+            infoboxesByLayout: "#users-infoboxes-count-frame",
+            usersByInfoboxesCount: "#top-users-by-infoboxes-count-frame"
+        },
+        unhideClass: "dashboard-frame-visible",
+    });
+
+
+    function populateSelectsWithOptions({ selectSelector, options }) {
+        const selects = document.querySelectorAll(selectSelector);
+
+        for(const select of selects) {
+            for (const {value, label} of options) {
+                const option = document.createElement('option');
+                option.value = value;
+                option.innerText = label;
+
+                select.add(option);
+            }
+        }
+    }
+
+    populateSelectsWithOptions({
+        selectSelector: ".layout-select",
+        options: [
+            {
+                label: "Online service",
+                value: "ONLINE_SERVICE"
+            },
+            {
+                label: "International passport",
+                value: "INTERNATIONAL_PASSPORT"
+            },
+            {
+                label: "Bank card",
+                value: "BANK_CARD"
+            }
+        ]
     });
 
 })();

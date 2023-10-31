@@ -7,6 +7,7 @@ class UserDto(BaseModel):
     password: str
 
 
+
 # API route responses
 class UserResponse(BaseModel):
     id: int
