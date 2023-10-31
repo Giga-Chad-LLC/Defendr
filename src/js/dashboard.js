@@ -107,7 +107,8 @@
 
     // requests
     {
-        const host = "http://127.0.0.1:8000";
+        const DEVELOPMENT = false;
+        const host = DEVELOPMENT ? "http://127.0.0.1:8000" : "http://10.72.1.14:8000/";
 
         // getting all users
         getFormData("#get-users-form", _ => {
