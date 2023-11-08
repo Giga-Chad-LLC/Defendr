@@ -418,3 +418,25 @@ select {
     align-items: center;
     justify-content: center;
 }
+
+/* Modal: auth-form */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-form h2 {
+    align-self: center;
+}
+
+.auth-form__block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.auth-form__block label {
+    margin-right: 20px;
+    font-weight: 500;
+}
