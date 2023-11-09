@@ -8,6 +8,7 @@ from server.src.routers.models.infoboxes import (
     InfoboxResponse,
     InfoboxesResponse,
 )
+from server.src.routers.dependencies.auth import require_auth
 
 
 router = APIRouter(
@@ -151,7 +152,7 @@ def get_infobox_by_id(infobox_id: int, connection=Depends(get_connection)):
 # @method: POST
 # @route: /infoboxes/online-service
 # @descr: create infobox of type 'ONLINE_SERVICE' in database
-@router.post("/online-service", response_model=InfoboxesResponse)
+@router.post("/online-service", dependencies=[Depends(require_auth)], response_model=InfoboxesResponse)
 def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
     email, password, url = infobox.fields["email"], infobox.fields["password"], infobox.fields["url"]
 
@@ -215,7 +216,7 @@ def create_online_service_infobox(infobox: InfoboxDto, connection=Depends(get_co
 # @method: POST
 # @route: /infoboxes/international-passport
 # @descr: create infobox of type 'INTERNATIONAL_PASSPORT' in database
-@router.post("/international-passport", response_model=InfoboxesResponse)
+@router.post("/international-passport", dependencies=[Depends(require_auth)], response_model=InfoboxesResponse)
 def create_international_passport_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
     name, nationality, number, surname = infobox.fields["name"], infobox.fields["nationality"], infobox.fields["number"], infobox.fields["surname"]
 
@@ -285,7 +286,7 @@ def create_international_passport_infobox(infobox: InfoboxDto, connection=Depend
 # @method: POST
 # @route: /infoboxes/bankcard
 # @descr: create infobox of type 'BANKCARD' in database
-@router.post("/bankcard", response_model=InfoboxesResponse)
+@router.post("/bankcard", dependencies=[Depends(require_auth)], response_model=InfoboxesResponse)
 def create_bankcard_infobox(infobox: InfoboxDto, connection=Depends(get_connection)):
     print(infobox.fields)
     number, cvv, pin = infobox.fields['number'], infobox.fields['cvv'], infobox.fields['pin']

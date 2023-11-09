@@ -247,7 +247,13 @@ import {
 
             console.log(data);
 
-            axios.post(`${host}/infoboxes/online-service`, data)
+            withAuth(({email, password}) => {
+                axios.post(`${host}/infoboxes/online-service`, data, {
+                    headers: {
+                        "x-email": email,
+                        "x-password": password,
+                    }
+                })
                 .then(response => {
                     createTableFromInfoboxes({
                         form: document.querySelector("#online-service-infobox-fields"),
@@ -259,6 +265,7 @@ import {
                     showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
+            });
         });
 
         // international passport infobox
@@ -276,7 +283,13 @@ import {
 
             console.log(data);
 
-            axios.post(`${host}/infoboxes/international-passport`, data)
+            withAuth(({email, password}) => {
+                axios.post(`${host}/infoboxes/international-passport`, data, {
+                    headers: {
+                        "x-email": email,
+                        "x-password": password,
+                    }
+                })
                 .then(response => {
                     createTableFromInfoboxes({
                         form: document.querySelector("#international-passport-infobox-fields"),
@@ -288,6 +301,8 @@ import {
                     showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
+            });
+
         });
 
         // bankcard infobox
@@ -302,7 +317,13 @@ import {
                 },
             };
 
-            axios.post(`${host}/infoboxes/bankcard`, data)
+            withAuth(({email, password}) => {
+                axios.post(`${host}/infoboxes/bankcard`, data, {
+                    headers: {
+                        "x-email": email,
+                        "x-password": password,
+                    }
+                })
                 .then(response => {
                     createTableFromInfoboxes({
                         form: document.querySelector("#bankcard-infobox-fields"),
@@ -314,6 +335,7 @@ import {
                     showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
+            });
         });
     }
 
