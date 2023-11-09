@@ -12,4 +12,5 @@ server:
 
 .PHONY server-detached
 server-detached:
-	nohup make server &
+	nohup python -m server.server &
+	echo $! > save_pid.txt
