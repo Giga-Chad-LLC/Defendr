@@ -59,7 +59,12 @@ import {
             console.log(data);
 
             withAuth(({ email, password }) => {
-                axios.post(`${host}/users`, data)
+                axios.post(`${host}/users`, data, {
+                    headers: {
+                        "x-email": email,
+                        "x-password": password,
+                    }
+                })
                 .then(response => {
                     const user = response.data;
 
