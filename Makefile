@@ -10,7 +10,7 @@ run:
 server:
 	python -m server.server
 
-.PHONY server-detached
+.PHONY: server-detached
 server-detached:
 	nohup python -m server.server &
 	echo $! > save_pid.txt
