@@ -4,7 +4,7 @@ run-prod:
 
 .PHONY: run
 run:
-	uvicorn server.server:app --reload
+	uvicorn server.server:app --reload --port 8347
 
 .PHONY: server
 server:
