@@ -200,7 +200,13 @@ import {
 
         // create directory in db
         getFormData('#create-directory-form', data => {
-            axios.post(`${host}/directories`, data)
+            withAuth(({email, password}) => {
+                axios.post(`${host}/directories`, data, {
+                    headers: {
+                        "x-email": email,
+                        "x-password": password,
+                    }
+                })
                 .then(response => {
                     console.log(response);
 
@@ -220,6 +226,7 @@ import {
                     showNotificationError(error?.response?.data?.detail);
                     console.error(error);
                 });
+            });
         });
 
 

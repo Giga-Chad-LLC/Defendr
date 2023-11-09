@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from server.src.db.connection import get_connection
 from server.src.routers.models.directories import DirectoryDto, DirectoryResponse, DirectoriesResponse
+from server.src.routers.dependencies.auth import require_auth
 
 
 router = APIRouter(
@@ -32,7 +33,7 @@ def get_directories(connection=Depends(get_connection)):
             ))
 
         return DirectoriesResponse(directories=directories)
-    
+
     finally:
         cursor.close()
 
@@ -69,13 +70,13 @@ def get_directory_by_id(user_id: int, connection=Depends(get_connection)):
 # @method: POST
 # @route: /directories
 # @descr: create directory in database
-@router.post("/", response_model=DirectoryResponse)
+@router.post("/", dependencies=[Depends(require_auth)], response_model=DirectoryResponse)
 def create_directory(directory: DirectoryDto, connection=Depends(get_connection)):
     if not directory.user_id or not directory.title or not directory.icon:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All fields must be filled")
-    
+
     cursor = connection.cursor()
-    try: 
+    try:
         query = "INSERT INTO directories (user_id, title, icon) VALUES (%s, %s, %s);"
 
         cursor.execute(query, (directory.user_id, directory.title, directory.icon))
@@ -83,7 +84,7 @@ def create_directory(directory: DirectoryDto, connection=Depends(get_connection)
         connection.commit()
 
         directory_id = cursor.lastrowid
-        
+
         return DirectoryResponse(
             id=directory_id,
             user_id=directory.user_id,
