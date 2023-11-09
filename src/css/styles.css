@@ -440,3 +440,13 @@ select {
     margin-right: 20px;
     font-weight: 500;
 }
+
+#current-auth {
+    display: flex;
+    flex-direction: column;
+}
+
+#current-auth-email {
+    font-weight: bold;
+    color: var(--action-color);
+}

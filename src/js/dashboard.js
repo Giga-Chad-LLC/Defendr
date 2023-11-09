@@ -6,6 +6,7 @@ import {
     displayFramesBySelectOptions,
     populateSelectsWithOptions,
     requestAuth,
+    withAuth,
 } from './implementation.js';
 
 (() => {
@@ -57,20 +58,22 @@ import {
         getFormData('#create-user-form', data => {
             console.log(data);
 
-            axios.post(`${host}/users`, data)
-            .then(response => {
-                const user = response.data;
+            withAuth(({ email, password }) => {
+                axios.post(`${host}/users`, data)
+                .then(response => {
+                    const user = response.data;
 
-                createTable({
-                    form: document.querySelector("#create-user-form"),
-                    containerSelector: ".frames-container__result",
-                    headers: ["id", "email"],
-                    rows: [[user.id, user.email]]
+                    createTable({
+                        form: document.querySelector("#create-user-form"),
+                        containerSelector: ".frames-container__result",
+                        headers: ["id", "email"],
+                        rows: [[user.id, user.email]]
+                    });
+                })
+                .catch(error => {
+                    showNotificationError(error?.response?.data?.detail);
+                    console.error(error);
                 });
-            })
-            .catch(error => {
-                showNotificationError(error?.response?.data?.detail);
-                console.error(error);
             });
         });
 
@@ -349,6 +352,7 @@ import {
         ]
     });
 
+    // capturing submit event of the authentication form
     document.querySelector('#show-auth-modal-button').addEventListener('click', e => {
         e.preventDefault();
         requestAuth();

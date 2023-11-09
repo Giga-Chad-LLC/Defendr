@@ -157,6 +157,7 @@ export function populateSelectsWithOptions({ selectSelector, options }) {
  */
 export function requestAuth(callback = null) {
     const modalContent = document.querySelector('#modal-1-content');
+
     modalContent.innerHTML = `
         <form id="auth-form" class="auth-form">
             <h2>Authorize</h2>
@@ -169,9 +170,25 @@ export function requestAuth(callback = null) {
                 <input type="password" name="password" required="true"/>
             </div>
 
+            <div id="current-auth" class="auth-form__block mt-20">
+                <span>Currently authorized as: </span>
+                <span id="current-auth-email"></span>
+            </div>
+
             <button class="button mt-30" type="submit">Submit</button>
         </form>
     `;
+
+    const currentAuthEmail = localStorage.getItem('email');
+
+    if (currentAuthEmail != null) {
+        const span = modalContent.querySelector('#current-auth-email');
+        span.innerText = currentAuthEmail;
+    }
+    else {
+        const block = modalContent.querySelector('#current-auth');
+        block.innerHTML = "<span>Currently unauthorized</span>";
+    }
 
     // receive data on submit
     getFormData('#auth-form', data => {
