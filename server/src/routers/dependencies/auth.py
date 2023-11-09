@@ -38,6 +38,6 @@ def require_auth(x_email: str = Header(None), x_password: str = Header(None)):
 
     except mysql.connector.Error as err:
         print(err)
-        raise HTTPException(status_code=500, detail=f"Something went wrong: {err}")
+        raise HTTPException(status_code=400, detail=f"Something went wrong: {err}")
     finally:
         cursor.close()
