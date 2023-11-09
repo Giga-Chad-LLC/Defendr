@@ -9,6 +9,7 @@ from server.src.routers.models.users import (
     UsersInfoboxCountResponse,
 )
 from server.src.routers.models.infoboxes import available_infobox_layouts
+from server.src.routers.dependencies.auth import require_auth
 
 
 
@@ -67,7 +68,7 @@ def get_user_by_id(user_id: int, connection=Depends(get_connection)):
 # @method: POST
 # @route: /users
 # @descr: create user in database
-@router.post("/", response_model=UserResponse, response_description="User data of inserted user")
+@router.post("/", dependencies=[Depends(require_auth)], response_model=UserResponse, response_description="User data of inserted user")
 def create_user(user: UserDto, connection=Depends(get_connection)):
     if user.email == "" or user.password == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="All fields must be non-empty")
