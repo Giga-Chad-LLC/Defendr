@@ -9,3 +9,7 @@ run:
 .PHONY: server
 server:
 	python -m server.server
+
+.PHONY server-detached
+server-detached:
+	nohup make server &
