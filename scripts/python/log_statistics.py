@@ -106,13 +106,39 @@ def plot_access_frequency_resource_time(request_lines, times, save_filepath):
 
 
 
-def plot_error_occurance_status_code_ip(status_codes, remote_hosts):
-    check_arrays_equal_length(status_codes, remote_hosts)
+def plot_error_occurrences_status_code(status_codes, save_filepath):
+    occurrences = dict()
+
+    for status_code in status_codes:
+        if status_code not in occurrences:
+            occurrences[status_code] = 0
+        occurrences[status_code] += 1
+
+    plt.figure(figsize=(10, 6))
+
+    plt.scatter(occurrences.values(), occurrences.keys())
+
+    plt.grid(True)
+    plt.xlabel('Occurrence count')
+    plt.ylabel('Status code')
+    plt.title('Timeline Diagram of status codes and their Occurrence counts')
+
+    plt.savefig(save_filepath)
 
 
 
-def plot_error_occurance_status_code_time(status_codes, times):
+def plot_errors_status_code_time(status_codes, times, save_filepath):
     check_arrays_equal_length(status_codes, times)
+
+    plt.figure(figsize=(10, 6))
+
+    plt.scatter(status_codes, times)
+
+    plt.xlabel('Status code')
+    plt.ylabel('Time')
+    plt.title('Timeline Diagram of status codes and time')
+
+    plt.savefig(save_filepath)
 
 
 
@@ -150,7 +176,9 @@ def main(argc, argv):
         now = int(datetime.now().timestamp())
         #plot_access_frequency_resource_counts(request_lines, f'plot_access_frequency_resource_counts-{now}.png')
         #plot_access_resource_ip(request_lines, remote_hosts, f"plot_access_resource_ip-{now}.png")
-        plot_access_frequency_resource_time(request_lines, times, f"plot_access_frequency_resource_time-{now}.png")
+        #plot_access_frequency_resource_time(request_lines, times, f"plot_access_frequency_resource_time-{now}.png")
+        #plot_error_occurrences_status_code(status_codes, f"plot_error_occurrences_status_code-{now}.png")
+        plot_errors_status_code_time(status_codes, times, f"plot_errors_status_code_time-{now}.png")
 
     finally:
         file.close()
