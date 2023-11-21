@@ -11,9 +11,7 @@ def check_arrays_equal_length(arr1, arr2):
 
 
 
-def plot_access_frequency_resource_ip(request_lines, remote_hosts, save_filepath):
-    check_arrays_equal_length(request_lines, remote_hosts)
-
+def plot_access_frequency_resource_counts(request_lines, save_filepath):
     n = len(request_lines)
     data_by_method = dict()
 
@@ -28,33 +26,27 @@ def plot_access_frequency_resource_ip(request_lines, remote_hosts, save_filepath
 
         data_by_method[method][url] += 1
 
-        # if method not in data_by_method:
-        #     data_by_method[method] = {
-        #         'urls': [],
-        #         'ips': [],
-        #     }
 
-        # data_by_method[method]['urls'].append(url)
-        # data_by_method[method]['ips'].append(remote_hosts[i])
+    unique_methods = list(data_by_method.keys())
 
-        # unique_methods = list(data_by_method.keys())
+    plt.figure(figsize=(10, 6))
 
-        # plt.figure(figsize=(17, 10))
+    for method in unique_methods:
+        plt.scatter(data_by_method[method].values(), data_by_method[method].keys(), label=method)
 
-        # for method in unique_methods:
-        #     plt.scatter(data_by_method[method]['ips'], data_by_method[method]['urls'], label=method)
+    plt.xlabel('Visit counts')
+    plt.ylabel('URLs')
+    plt.title('Timeline Diagram of Visit counts to URLs by HTTP Method')
+    plt.legend(title='HTTP Method')
 
-        # plt.xlabel('IP Addresses')
-        # plt.ylabel('URLs')
-        # plt.title('Timeline Diagram of IPs to URLs by HTTP Method')
-        # plt.legend(title='HTTP Method')
-
-        # plt.savefig(save_filepath)
+    plt.savefig(save_filepath)
 
 
 
 def plot_access_frequency_resource_time(request_lines, times):
     check_arrays_equal_length(request_lines, times)
+
+
 
 
 
@@ -87,7 +79,12 @@ def main(argc, argv):
         user_agents = []
 
         for log_entry in file.readlines():
-            values = log_entry_pattern.match(log_entry).groupdict()
+            match = log_entry_pattern.match(log_entry)
+
+            if match is None:
+                continue
+
+            values = match.groupdict()
 
             remote_hosts.append(values['remote_host'])
             times.append(values['timestamp'])
@@ -95,7 +92,7 @@ def main(argc, argv):
             status_codes.append(values['status_code'])
             user_agents.append(values['user_agent'])
 
-        plot_access_frequency_resource_ip(request_lines, remote_hosts, f'access_frequency_resource_ip-{datetime.now().timestamp()}.png')
+        plot_access_frequency_resource_counts(request_lines, f'access_frequency_resource_ip-{int(datetime.now().timestamp())}.png')
 
 
     finally:
