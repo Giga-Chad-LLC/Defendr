@@ -44,6 +44,7 @@ def plot_access_frequency_resource_counts(request_lines, save_filepath):
     plt.xlabel('Visit counts')
     plt.ylabel('URLs')
     plt.title('Timeline Diagram of Visit counts to URLs by HTTP Method')
+    plt.legend(title='HTTP Method')
 
     plt.savefig(save_filepath)
 
@@ -69,7 +70,6 @@ def plot_access_resource_ip(request_lines, remote_hosts, save_filepath):
 
     unique_methods = list(data_by_method.keys())
 
-    # plt.figure(figsize=(10, 6))
     _, ax = plt.subplots(figsize=(10, 6), layout="constrained")
     plt.setp(ax.get_xticklabels(), rotation=35, ha="right")
 
@@ -95,7 +95,8 @@ def plot_access_frequency_resource_time(request_lines, times, save_filepath):
         _, url, _ = line.split(' ')
         urls.append(url)
 
-    plt.figure(figsize=(10, 6))
+    _, ax = plt.subplots(figsize=(10, 6), layout="constrained")
+    plt.setp(ax.get_xticklabels(), rotation=35, ha="right")
 
     plt.scatter(times, urls)
 
@@ -133,10 +134,10 @@ def plot_access_frequency_user_agent(user_agents, save_filepath):
 
     plt.figure(figsize=(10, 6))
 
-    plt.scatter(browsers.values(), browsers.keys())
+    plt.scatter(browsers.keys(), browsers.values())
 
-    plt.xlabel('Request counts')
-    plt.ylabel('Browser')
+    plt.xlabel('Browser')
+    plt.ylabel('Request counts')
     plt.title('Timeline Diagram of Browsers and number of made requests from it')
 
     plt.savefig(save_filepath)
@@ -153,11 +154,11 @@ def plot_error_occurrences_status_code(status_codes, save_filepath):
 
     plt.figure(figsize=(10, 6))
 
-    plt.scatter(occurrences.values(), occurrences.keys())
+    plt.scatter(occurrences.keys(), occurrences.values())
 
     plt.grid(True)
-    plt.xlabel('Occurrence count')
-    plt.ylabel('Status code')
+    plt.xlabel('Status code')
+    plt.ylabel('Occurrence count')
     plt.title('Timeline Diagram of status codes and their Occurrence counts')
 
     plt.savefig(save_filepath)
@@ -167,12 +168,13 @@ def plot_error_occurrences_status_code(status_codes, save_filepath):
 def plot_errors_status_code_time(status_codes, times, save_filepath):
     check_arrays_equal_length(status_codes, times)
 
-    plt.figure(figsize=(10, 6))
+    _, ax = plt.subplots(figsize=(10, 6), layout="constrained")
+    plt.setp(ax.get_xticklabels(), rotation=35, ha="right")
 
-    plt.scatter(status_codes, times)
+    plt.scatter(times, status_codes)
 
-    plt.xlabel('Status code')
-    plt.ylabel('Time')
+    plt.xlabel('Time')
+    plt.ylabel('Status code')
     plt.title('Timeline Diagram of status codes and time')
 
     plt.savefig(save_filepath)
@@ -182,12 +184,13 @@ def plot_errors_status_code_time(status_codes, times, save_filepath):
 def plot_errors_status_code_ip(status_codes, remote_hosts, save_filepath):
     check_arrays_equal_length(status_codes, remote_hosts)
 
-    plt.figure(figsize=(10, 6))
+    _, ax = plt.subplots(figsize=(10, 6), layout="constrained")
+    plt.setp(ax.get_xticklabels(), rotation=35, ha="right")
 
-    plt.scatter(status_codes, remote_hosts)
+    plt.scatter(remote_hosts, status_codes)
 
-    plt.xlabel('Status code')
-    plt.ylabel('IPs')
+    plt.xlabel('IPs')
+    plt.ylabel('Status code')
     plt.title('Timeline Diagram of status codes and its originated IPs')
 
     plt.savefig(save_filepath)
@@ -238,13 +241,13 @@ def main(argc, argv):
             os.makedirs(save_dirpath)
 
         now = int(datetime.now().timestamp())
-        # plot_access_frequency_resource_counts(request_lines, f'plot_access_frequency_resource_counts-{now}.png')
+        plot_access_frequency_resource_counts(request_lines, f'{save_dirpath}/plot_access_frequency_resource_counts-{now}.png')
         plot_access_resource_ip(request_lines, remote_hosts, f"{save_dirpath}/plot_access_resource_ip-{now}.png")
-        # plot_access_frequency_resource_time(request_lines, times, f"{save_dirpath}/plot_access_frequency_resource_time-{now}.png")
-        # plot_error_occurrences_status_code(status_codes, f"{save_dirpath}/plot_error_occurrences_status_code-{now}.png")
-        # plot_errors_status_code_time(status_codes, times, f"{save_dirpath}/plot_errors_status_code_time-{now}.png")
-        # plot_errors_status_code_ip(status_codes, remote_hosts, f"{save_dirpath}/plot_errors_status_code_ip-{now}.png")
-        # plot_access_frequency_user_agent(user_agents, f"{save_dirpath}/plot_access_frequency_user_agent-{now}.png")
+        plot_access_frequency_resource_time(request_lines, times, f"{save_dirpath}/plot_access_frequency_resource_time-{now}.png")
+        plot_error_occurrences_status_code(status_codes, f"{save_dirpath}/plot_error_occurrences_status_code-{now}.png")
+        plot_errors_status_code_time(status_codes, times, f"{save_dirpath}/plot_errors_status_code_time-{now}.png")
+        plot_errors_status_code_ip(status_codes, remote_hosts, f"{save_dirpath}/plot_errors_status_code_ip-{now}.png")
+        plot_access_frequency_user_agent(user_agents, f"{save_dirpath}/plot_access_frequency_user_agent-{now}.png")
 
     finally:
         file.close()
