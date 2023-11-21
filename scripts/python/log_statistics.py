@@ -1,4 +1,5 @@
 import sys
+import os
 import re
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -68,7 +69,9 @@ def plot_access_resource_ip(request_lines, remote_hosts, save_filepath):
 
     unique_methods = list(data_by_method.keys())
 
-    plt.figure(figsize=(10, 6))
+    # plt.figure(figsize=(10, 6))
+    _, ax = plt.subplots(figsize=(10, 6), layout="constrained")
+    plt.setp(ax.get_xticklabels(), rotation=35, ha="right")
 
     for method in unique_methods:
         plt.scatter(data_by_method[method]['ips'], data_by_method[method]['urls'], label=method)
@@ -77,6 +80,7 @@ def plot_access_resource_ip(request_lines, remote_hosts, save_filepath):
     plt.ylabel('URLs')
     plt.title('Timeline Diagram of IPs to URLs by HTTP Method')
     plt.legend(title='HTTP Method')
+
 
     plt.savefig(save_filepath)
 
@@ -112,11 +116,11 @@ def plot_access_frequency_user_agent(user_agents, save_filepath):
             browser = 'Chrome'
         elif 'Safari' in agent:
             browser = 'Safari'
-        elif 'OPR' in agent:
+        elif 'OPR' in agent or 'Opera' in agent:
             browser = 'Opera'
         elif 'Firefox' in agent:
             browser = 'Firefox'
-        elif 'Edg' in agent:
+        elif 'Edg' in agent or 'Edge' in agent:
             browser = 'Edge'
         elif 'Trident' in agent:
             browser = 'Internet Explorer'
@@ -191,10 +195,15 @@ def plot_errors_status_code_ip(status_codes, remote_hosts, save_filepath):
 
 
 
-
 def main(argc, argv):
-    if (argc < 2):
-        raise ValueError(f"Log filepath mot provided.\nUse: {argv[0]} path/to/apache2/log/file")
+    """
+    Expects 2 arguments:
+        1. path to an Apache2 log file
+        2. dirpath by which the resulting plots should be stored
+    """
+
+    if (argc < 3):
+        raise ValueError(f"Log filepath mot provided.\nUse: {argv[0]} path/to/apache2/log/file path/to/store/directory")
 
     log_entry_pattern = re.compile(
         r'(?P<remote_host>[\d\.]+) (?P<user_identifier>[\w-]+) (?P<user_id>[\w-]+) \[(?P<timestamp>.*?)\] "(?P<request_line>.*?)" (?P<status_code>\d+) (?P<response_size>[\d-]+) "(?P<referrer>.*?)" "(?P<user_agent>.*?)"'
@@ -223,14 +232,19 @@ def main(argc, argv):
             status_codes.append(values['status_code'])
             user_agents.append(values['user_agent'])
 
+        save_dirpath = argv[2]
+
+        if not os.path.exists(save_dirpath):
+            os.makedirs(save_dirpath)
+
         now = int(datetime.now().timestamp())
-        #plot_access_frequency_resource_counts(request_lines, f'plot_access_frequency_resource_counts-{now}.png')
-        #plot_access_resource_ip(request_lines, remote_hosts, f"plot_access_resource_ip-{now}.png")
-        #plot_access_frequency_resource_time(request_lines, times, f"plot_access_frequency_resource_time-{now}.png")
-        #plot_error_occurrences_status_code(status_codes, f"plot_error_occurrences_status_code-{now}.png")
-        #plot_errors_status_code_time(status_codes, times, f"plot_errors_status_code_time-{now}.png")
-        #plot_errors_status_code_ip(status_codes, remote_hosts, f"plot_errors_status_code_ip-{now}.png")
-        plot_access_frequency_user_agent(user_agents, f"plot_access_frequency_user_agent-{now}.png")
+        # plot_access_frequency_resource_counts(request_lines, f'plot_access_frequency_resource_counts-{now}.png')
+        plot_access_resource_ip(request_lines, remote_hosts, f"{save_dirpath}/plot_access_resource_ip-{now}.png")
+        # plot_access_frequency_resource_time(request_lines, times, f"{save_dirpath}/plot_access_frequency_resource_time-{now}.png")
+        # plot_error_occurrences_status_code(status_codes, f"{save_dirpath}/plot_error_occurrences_status_code-{now}.png")
+        # plot_errors_status_code_time(status_codes, times, f"{save_dirpath}/plot_errors_status_code_time-{now}.png")
+        # plot_errors_status_code_ip(status_codes, remote_hosts, f"{save_dirpath}/plot_errors_status_code_ip-{now}.png")
+        # plot_access_frequency_user_agent(user_agents, f"{save_dirpath}/plot_access_frequency_user_agent-{now}.png")
 
     finally:
         file.close()
