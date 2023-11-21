@@ -11,6 +11,13 @@ def check_arrays_equal_length(arr1, arr2):
 
 
 
+def convert_time_format(input_time):
+    dt_object = datetime.strptime(input_time, "%d/%b/%Y:%H:%M:%S %z")
+    output_time = dt_object.strftime("%d %b %H:%M:%S")
+    return output_time
+
+
+
 def plot_access_frequency_resource_counts(request_lines, save_filepath):
     n = len(request_lines)
     data_by_method = dict()
@@ -36,7 +43,6 @@ def plot_access_frequency_resource_counts(request_lines, save_filepath):
     plt.xlabel('Visit counts')
     plt.ylabel('URLs')
     plt.title('Timeline Diagram of Visit counts to URLs by HTTP Method')
-    plt.legend(title='HTTP Method')
 
     plt.savefig(save_filepath)
 
@@ -78,10 +84,24 @@ def plot_access_resource_ip(request_lines, remote_hosts, save_filepath):
 
 
 
-def plot_access_frequency_resource_time(request_lines, times):
+def plot_access_frequency_resource_time(request_lines, times, save_filepath):
     check_arrays_equal_length(request_lines, times)
 
+    urls = []
 
+    for line in request_lines:
+        _, url, _ = line.split(' ')
+        urls.append(url)
+
+    plt.figure(figsize=(10, 6))
+
+    plt.scatter(times, urls)
+
+    plt.xlabel('Time')
+    plt.ylabel('URLs')
+    plt.title('Timeline Diagram of Time to URLs')
+
+    plt.savefig(save_filepath)
 
 
 
@@ -122,14 +142,15 @@ def main(argc, argv):
             values = match.groupdict()
 
             remote_hosts.append(values['remote_host'])
-            times.append(values['timestamp'])
+            times.append(convert_time_format(values['timestamp']))
             request_lines.append(values['request_line'])
             status_codes.append(values['status_code'])
             user_agents.append(values['user_agent'])
 
         now = int(datetime.now().timestamp())
-        plot_access_frequency_resource_counts(request_lines, f'plot_access_frequency_resource_counts-{now}.png')
-        plot_access_resource_ip(request_lines, remote_hosts, f"plot_access_resource_ip-{now}.png")
+        #plot_access_frequency_resource_counts(request_lines, f'plot_access_frequency_resource_counts-{now}.png')
+        #plot_access_resource_ip(request_lines, remote_hosts, f"plot_access_resource_ip-{now}.png")
+        plot_access_frequency_resource_time(request_lines, times, f"plot_access_frequency_resource_time-{now}.png")
 
     finally:
         file.close()
