@@ -142,6 +142,23 @@ def plot_errors_status_code_time(status_codes, times, save_filepath):
 
 
 
+def plot_errors_status_code_ip(status_codes, remote_hosts, save_filepath):
+    check_arrays_equal_length(status_codes, remote_hosts)
+
+    plt.figure(figsize=(10, 6))
+
+    plt.scatter(status_codes, remote_hosts)
+
+    plt.xlabel('Status code')
+    plt.ylabel('IPs')
+    plt.title('Timeline Diagram of status codes and its originated IPs')
+
+    plt.savefig(save_filepath)
+
+
+
+
+
 def main(argc, argv):
     if (argc < 2):
         raise ValueError(f"Log filepath mot provided.\nUse: {argv[0]} path/to/apache2/log/file")
@@ -178,7 +195,8 @@ def main(argc, argv):
         #plot_access_resource_ip(request_lines, remote_hosts, f"plot_access_resource_ip-{now}.png")
         #plot_access_frequency_resource_time(request_lines, times, f"plot_access_frequency_resource_time-{now}.png")
         #plot_error_occurrences_status_code(status_codes, f"plot_error_occurrences_status_code-{now}.png")
-        plot_errors_status_code_time(status_codes, times, f"plot_errors_status_code_time-{now}.png")
+        #plot_errors_status_code_time(status_codes, times, f"plot_errors_status_code_time-{now}.png")
+        plot_errors_status_code_ip(status_codes, remote_hosts, f"plot_errors_status_code_ip-{now}.png")
 
     finally:
         file.close()
