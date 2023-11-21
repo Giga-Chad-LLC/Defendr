@@ -26,7 +26,6 @@ def plot_access_frequency_resource_counts(request_lines, save_filepath):
 
         data_by_method[method][url] += 1
 
-
     unique_methods = list(data_by_method.keys())
 
     plt.figure(figsize=(10, 6))
@@ -40,6 +39,42 @@ def plot_access_frequency_resource_counts(request_lines, save_filepath):
     plt.legend(title='HTTP Method')
 
     plt.savefig(save_filepath)
+
+
+
+def plot_access_resource_ip(request_lines, remote_hosts, save_filepath):
+    check_arrays_equal_length(request_lines, remote_hosts)
+
+    n = len(request_lines)
+    data_by_method = dict()
+
+    for i in range(n):
+        method, url, _ = request_lines[i].split(' ')
+
+        if method not in data_by_method:
+            data_by_method[method] = {
+                'urls': [],
+                'ips': [],
+            }
+
+        data_by_method[method]['urls'].append(url)
+        data_by_method[method]['ips'].append(remote_hosts[i])
+
+    unique_methods = list(data_by_method.keys())
+
+    plt.figure(figsize=(10, 6))
+
+    for method in unique_methods:
+        plt.scatter(data_by_method[method]['ips'], data_by_method[method]['urls'], label=method)
+
+    plt.xlabel('IP Addresses')
+    plt.ylabel('URLs')
+    plt.title('Timeline Diagram of IPs to URLs by HTTP Method')
+    plt.legend(title='HTTP Method')
+
+    plt.savefig(save_filepath)
+
+
 
 
 
@@ -92,8 +127,9 @@ def main(argc, argv):
             status_codes.append(values['status_code'])
             user_agents.append(values['user_agent'])
 
-        plot_access_frequency_resource_counts(request_lines, f'access_frequency_resource_ip-{int(datetime.now().timestamp())}.png')
-
+        now = int(datetime.now().timestamp())
+        plot_access_frequency_resource_counts(request_lines, f'plot_access_frequency_resource_counts-{now}.png')
+        plot_access_resource_ip(request_lines, remote_hosts, f"plot_access_resource_ip-{now}.png")
 
     finally:
         file.close()
