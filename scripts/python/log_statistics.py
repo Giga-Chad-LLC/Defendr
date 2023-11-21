@@ -82,8 +82,6 @@ def plot_access_resource_ip(request_lines, remote_hosts, save_filepath):
 
 
 
-
-
 def plot_access_frequency_resource_time(request_lines, times, save_filepath):
     check_arrays_equal_length(request_lines, times)
 
@@ -103,6 +101,41 @@ def plot_access_frequency_resource_time(request_lines, times, save_filepath):
 
     plt.savefig(save_filepath)
 
+
+def plot_access_frequency_user_agent(user_agents, save_filepath):
+    browsers = dict()
+
+    for agent in user_agents:
+        browser = None
+
+        if 'Chrome' in agent:
+            browser = 'Chrome'
+        elif 'Safari' in agent:
+            browser = 'Safari'
+        elif 'OPR' in agent:
+            browser = 'Opera'
+        elif 'Firefox' in agent:
+            browser = 'Firefox'
+        elif 'Edg' in agent:
+            browser = 'Edge'
+        elif 'Trident' in agent:
+            browser = 'Internet Explorer'
+        else:
+            browser = 'Other'
+
+        if browser not in browsers:
+            browsers[browser] = 0
+        browsers[browser] += 1
+
+    plt.figure(figsize=(10, 6))
+
+    plt.scatter(browsers.values(), browsers.keys())
+
+    plt.xlabel('Request counts')
+    plt.ylabel('Browser')
+    plt.title('Timeline Diagram of Browsers and number of made requests from it')
+
+    plt.savefig(save_filepath)
 
 
 
@@ -196,7 +229,8 @@ def main(argc, argv):
         #plot_access_frequency_resource_time(request_lines, times, f"plot_access_frequency_resource_time-{now}.png")
         #plot_error_occurrences_status_code(status_codes, f"plot_error_occurrences_status_code-{now}.png")
         #plot_errors_status_code_time(status_codes, times, f"plot_errors_status_code_time-{now}.png")
-        plot_errors_status_code_ip(status_codes, remote_hosts, f"plot_errors_status_code_ip-{now}.png")
+        #plot_errors_status_code_ip(status_codes, remote_hosts, f"plot_errors_status_code_ip-{now}.png")
+        plot_access_frequency_user_agent(user_agents, f"plot_access_frequency_user_agent-{now}.png")
 
     finally:
         file.close()
