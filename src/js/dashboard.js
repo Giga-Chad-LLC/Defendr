@@ -11,7 +11,7 @@ import {
 } from './implementation.js';
 
 (() => {
-    const DEVELOPMENT = true;
+    const DEVELOPMENT = false;
     const host = DEVELOPMENT ? "http://127.0.0.1:8347" : "http://10.72.1.14:8347";
 
     // requests
