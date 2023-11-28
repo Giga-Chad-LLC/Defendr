@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="../css/margins.css">
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/modal.css">
+
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 </head>
 <body>
     <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
@@ -50,6 +54,7 @@
         <ul data-tabs class="mt-60">
             <li><a data-tabby-default href="#queries">Queries (Homework 6)</a></li>
             <li><a href="#modifications">Modifications (Homework 5)</a></li>
+            <li><a href="#autocomplete">Autocomplete (Homework 9)</a></li>
         </ul>
     </div>
 
@@ -281,6 +286,32 @@
 
                             <button type="submit" class="button mt-20">Create infobox</button>
                         </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Autocomplete (Homework 9) -->
+        <div id="autocomplete">
+            <div class="mt-60">
+                <h2>Start typing to view the autocompletion:</h2>
+            </div>
+
+            <div class="frames-container mt-50">
+                <div class="dashboard-frame dashboard-frame-visible">
+                    <div class="autocomplete-block">
+                        <label for="user-id-input" class="label">
+                            User id:
+                        </label>
+                        <input name="id" id="user-id-input">
+                    </div>
+
+                    <div class="autocomplete-block mt-40">
+                        <label for="user-email-input" class="label">
+                            User email:
+                        </label>
+                        <input name="email" type="email" id="user-email-input">
+                    </div>
                 </div>
             </div>
         </div>

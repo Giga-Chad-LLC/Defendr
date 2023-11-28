@@ -230,3 +230,10 @@ export function withAuth(callback, useCached = true) {
         callback({ email, password });
     }
 }
+
+export function setAutocompletion(inputFieldSelector, delay_ms, callback) {
+    $(inputFieldSelector).autocomplete({
+        delay: delay_ms,
+        source: (request, response) => callback(request, response),
+    });
+}

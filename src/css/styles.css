@@ -450,3 +450,16 @@ select {
     font-weight: bold;
     color: var(--action-color);
 }
+
+/* autocomplete */
+.autocomplete-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* modifying JQuery element to have fixed size and be scrollable */
+.ui-autocomplete {
+    max-height: 250px;
+    overflow: auto;
+}

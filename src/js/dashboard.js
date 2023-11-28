@@ -7,14 +7,15 @@ import {
     populateSelectsWithOptions,
     requestAuth,
     withAuth,
+    setAutocompletion,
 } from './implementation.js';
 
 (() => {
+    const DEVELOPMENT = true;
+    const host = DEVELOPMENT ? "http://127.0.0.1:8347" : "http://10.72.1.14:8347";
+
     // requests
     {
-        const DEVELOPMENT = false;
-        const host = DEVELOPMENT ? "http://127.0.0.1:8347" : "http://10.72.1.14:8347";
-
         // getting all users
         getFormData("#get-users-form", _ => {
             axios.get(`${host}/users`)
@@ -390,6 +391,32 @@ import {
     document.querySelector('#show-auth-modal-button').addEventListener('click', e => {
         e.preventDefault();
         requestAuth();
+    });
+
+
+    // setting up autocompletion for the input fields in demo tab
+    setAutocompletion('#user-id-input', 200, (request, response) => {
+        axios.get(`${host}/search/user-id`, {
+            params: { term: request.term }
+        })
+            .then(res => response(res.data.results))
+            .catch(error => {
+                showNotificationError(error?.response?.data?.detail);
+                console.error(error);
+                response([]);
+            });
+    });
+
+    setAutocompletion('#user-email-input', 200, (request, response) => {
+        axios.get(`${host}/search/user-email`, {
+            params: { term: request.term }
+        })
+            .then(res => response(res.data.results))
+            .catch(error => {
+                showNotificationError(error?.response?.data?.detail);
+                console.error(error);
+                response([]);
+            });
     });
 
 })();
