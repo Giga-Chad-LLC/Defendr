@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from server.src.routers import users, infoboxes, directories
+from server.src.routers import users, infoboxes, directories, search
 
 try:
     app = FastAPI()
@@ -11,6 +11,7 @@ try:
     app.include_router(users.router)
     app.include_router(infoboxes.router)
     app.include_router(directories.router)
+    app.include_router(search.router)
 
     # required for the CORS pocilies
     app.add_middleware(
