@@ -394,29 +394,51 @@ import {
     });
 
 
-    // setting up autocompletion for the input fields in demo tab
-    setAutocompletion('#user-id-input', 200, (request, response) => {
-        axios.get(`${host}/search/user-id`, {
-            params: { term: request.term }
-        })
-            .then(res => response(res.data.results))
-            .catch(error => {
-                showNotificationError(error?.response?.data?.detail);
-                console.error(error);
-                response([]);
-            });
-    });
+    // setting up autocompletion for the input fields that require user ids
+    (() => {
+        const inputFieldSelectors = [
+            '#get-user-by-id-input',
+            '#user-id-input',
+            '#get-all-directories-input',
+            '#create-directory-user-id-input',
+            '#online-service-infobox-user-id-input',
+            '#international-passport-infobox-user-id-input',
+            '#bankcard-infobox-user-id-input',
+        ];
 
-    setAutocompletion('#user-email-input', 200, (request, response) => {
-        axios.get(`${host}/search/user-email`, {
-            params: { term: request.term }
-        })
-            .then(res => response(res.data.results))
-            .catch(error => {
-                showNotificationError(error?.response?.data?.detail);
-                console.error(error);
-                response([]);
+        for (const selector of inputFieldSelectors) {
+            setAutocompletion(selector, 200, (request, response) => {
+                axios.get(`${host}/search/user-id`, {
+                    params: { term: request.term }
+                })
+                    .then(res => response(res.data.results))
+                    .catch(error => {
+                        showNotificationError(error?.response?.data?.detail);
+                        console.error(error);
+                        response([]);
+                    });
             });
-    });
+        }
+    })();
 
+    // setting up autocompletion for the input fields that require user emails
+    (() => {
+        const inputFieldSelectors = [
+            '#user-email-input',
+        ];
+
+        for (const selector of inputFieldSelectors) {
+            setAutocompletion(selector, 200, (request, response) => {
+                axios.get(`${host}/search/user-email`, {
+                    params: { term: request.term }
+                })
+                    .then(res => response(res.data.results))
+                    .catch(error => {
+                        showNotificationError(error?.response?.data?.detail);
+                        console.error(error);
+                        response([]);
+                    });
+            });
+        }
+    })();
 })();
