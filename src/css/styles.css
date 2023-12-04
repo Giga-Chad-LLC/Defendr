@@ -463,3 +463,8 @@ select {
     max-height: 250px;
     overflow: auto;
 }
+
+
+.map {
+    height: 400px;
+}

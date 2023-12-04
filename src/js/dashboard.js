@@ -10,9 +10,13 @@ import {
     setAutocompletion,
 } from './implementation.js';
 
+import config from './config.js';
+
+
 (() => {
-    const DEVELOPMENT = false;
-    const host = DEVELOPMENT ? "http://127.0.0.1:8347" : "http://10.72.1.14:8347";
+    // const DEVELOPMENT = false;
+    // const host = DEVELOPMENT ? "http://127.0.0.1:8347" : "http://10.72.1.14:8347";
+    const host = config.host;
 
     // requests
     {
